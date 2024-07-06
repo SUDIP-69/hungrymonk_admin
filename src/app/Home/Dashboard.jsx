@@ -9,22 +9,22 @@ import Tooltip from "@mui/material/Tooltip";
 
 const authors = [
   {
-    name: 'John Michael',
-    email: 'john@creative-tim.com',
-    function: 'Manager',
-    organization: 'Organization',
-    status: 'ONLINE',
-    employed: '23/04/18',
-    img: '/path/to/image', // Replace with the actual image path
+    name: "John Michael",
+    email: "john@creative-tim.com",
+    function: "Manager",
+    organization: "Organization",
+    status: "ONLINE",
+    employed: "23/04/18",
+    img: "/path/to/image", // Replace with the actual image path
   },
   {
-    name: 'Alexa Liras',
-    email: 'alexa@creative-tim.com',
-    function: 'Programator',
-    organization: 'Developer',
-    status: 'OFFLINE',
-    employed: '11/01/19',
-    img: '/path/to/image', // Replace with the actual image path
+    name: "Alexa Liras",
+    email: "alexa@creative-tim.com",
+    function: "Programator",
+    organization: "Developer",
+    status: "OFFLINE",
+    employed: "11/01/19",
+    img: "/path/to/image", // Replace with the actual image path
   },
   // Add more authors as needed
 ];
@@ -33,82 +33,33 @@ import HomeSection from "./HomeSection";
 import MenuBookSection from "./MenuBookSection";
 import SettingsComponent from "./SettingsComponent";
 import TableRestaurantSection from "./Menupage";
-const PersonSearchSection = () => (
-  <>
-  <div className="bg-yellow-500 w-full h-full p-4">Person Search Content</div>
-  <div className="p-4">
-      <div className="bg-blue-500 text-white text-lg font-semibold rounded-t-md px-4 py-2">
-        Authors Table
-      </div>
-      <table className="min-w-full bg-white border rounded-b-md">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 text-left">Author</th>
-            <th className="px-4 py-2 text-left">Function</th>
-            <th className="px-4 py-2 text-left">Status</th>
-            <th className="px-4 py-2 text-left">Employed</th>
-            <th className="px-4 py-2 text-left">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {authors.map((author, index) => (
-            <tr key={index} className="border-t">
-              <td className="px-4 py-2 flex items-center">
-                <img
-                  src={author.img}
-                  alt={author.name}
-                  className="w-10 h-10 rounded-full mr-3"
-                />
-                <div>
-                  <p className="font-medium">{author.name}</p>
-                  <p className="text-gray-500 text-sm">{author.email}</p>
-                </div>
-              </td>
-              <td className="px-4 py-2">
-                <p className="font-medium">{author.function}</p>
-                <p className="text-gray-500 text-sm">{author.organization}</p>
-              </td>
-              <td className="px-4 py-2">
-                <span
-                  className={`px-2 py-1 text-sm font-medium rounded-full ${
-                    author.status === 'ONLINE'
-                      ? 'bg-green-200 text-green-800'
-                      : 'bg-gray-200 text-gray-800'
-                  }`}
-                >
-                  {author.status}
-                </span>
-              </td>
-              <td className="px-4 py-2">{author.employed}</td>
-              <td className="px-4 py-2 text-blue-500 cursor-pointer">Edit</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </>
-);
+import PersonSearchSection from "./WaiterView";
 
 
-function Dashboard({restaurantinfo}) {
+function Dashboard({ restaurantinfo }) {
   //console.log(restaurantinfo);
   const [currentSection, setCurrentSection] = useState("home");
-  const changesection=(section)=>{
+  const changesection = (section) => {
     setCurrentSection(section);
-  }
+  };
 
   const renderSection = (currentSection) => {
     switch (currentSection) {
       case "home":
-        return <HomeSection restaurantinfo={restaurantinfo}/>;
+        return <HomeSection restaurantinfo={restaurantinfo} />;
       case "menuBook":
-        return <TableRestaurantSection restaurantinfo={restaurantinfo}/>;
+        return <TableRestaurantSection restaurantinfo={restaurantinfo} />;
       case "tableRestaurant":
-        return < MenuBookSection restaurantinfo={restaurantinfo}/>;
+        return <MenuBookSection restaurantinfo={restaurantinfo} />;
       case "personSearch":
-        return <PersonSearchSection restaurantinfo={restaurantinfo}/>;
+        return <PersonSearchSection restaurantinfo={restaurantinfo} />;
       case "settings":
-        return <SettingsComponent restaurantinfo={restaurantinfo} changesection={changesection} />;
+        return (
+          <SettingsComponent
+            restaurantinfo={restaurantinfo}
+            changesection={changesection}
+          />
+        );
       default:
         return <HomeSection />;
     }
