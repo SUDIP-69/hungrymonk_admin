@@ -7,3 +7,27 @@ body
     background-color: #440129;
     overflow-x: hidden;
 }
+
+.centered-axis-x {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+/* Add this to your global CSS file */
+.ReactModal__Overlay {
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+  }
+  
+  .ReactModal__Content {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    max-width: 500px;
+    width: 100%;
+  }
+  

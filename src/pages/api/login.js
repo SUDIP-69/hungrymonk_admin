@@ -7,17 +7,17 @@ const handler = async (req, res) => {
   try {
     if (req.method == "POST") {
       const { username, password } = req.body;
-      console.log(username, password);
+      //console.log(username, password);
       if (username) {
         const users = await User.findOne({ username });
-        console.log(users);
+        //console.log(users);
         if (users) {
           const ismatch = await bcrypt.compare(password, users.password);
-          console.log(ismatch);
+          //console.log(ismatch);
           if (ismatch) {
               const token =jwt.sign({name:users.name},'qwerty')
-              console.log(token);
-            res.json({ success: true,token:token });
+              //console.log(token);
+            res.json({ success: true,token:token,restaurantid:users.restaurantid });
           } else {
             res.json({ success: false,token:null });
           }
