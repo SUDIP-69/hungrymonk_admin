@@ -1,6 +1,9 @@
+"use client"
 import React, { useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+import { Tooltip } from '@mui/material';
 
-const MenuItemForm = () => {
+const MenuItemForm = ({handleclose}) => {
   const [formData, setFormData] = useState({
     image: '',
     name: '',
@@ -31,8 +34,10 @@ const MenuItemForm = () => {
   };
 
   return (
-    <div className='fixed z-50 h-screen w-screen top-0 left-0 flex justify-center items-center bg-black/20 backdrop-blur-sm'>
-    <div className="bg-[#fff9ea] p-6 rounded-md shadow-md max-w-lg mx-auto">
+    <div className='fixed z-50 h-screen w-screen top-0 left-0 flex justify-center overflow-x-auto items-center bg-black/20 backdrop-blur-sm'>
+    <div className="bg-[#fff9ea] p-6 rounded-md shadow-md max-w-[50vw] mx-auto relative">
+      <Tooltip title='close'>
+    <span onClick={handleclose} className="absolute top-2 right-2 cursor-pointer"><CloseIcon/></span></Tooltip>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-[#440129] font-semibold mb-2">Image</label>
@@ -44,6 +49,7 @@ const MenuItemForm = () => {
           />
           {formData.image && <img src={formData.image} alt="Selected" className="mt-2 w-32 h-32 object-cover rounded-md" />}
         </div>
+        <div className='grid grid-cols-2 gap-2'>
         <div className="mb-4">
           <label className="block text-[#440129] font-semibold mb-2">Name</label>
           <input
@@ -55,14 +61,18 @@ const MenuItemForm = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-[#440129] font-semibold mb-2">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
+          <label className="block text-[#440129] font-semibold mb-2">Availability Status</label>
+          <select
+            name="status"
+            value={formData.status}
             onChange={handleChange}
-            className="p-2 rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
-          ></textarea>
+            className="p-2 py-[9px] rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
+          >
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+          </select>
         </div>
+       
         <div className="mb-4">
           <label className="block text-[#440129] font-semibold mb-2">Category</label>
           <input
@@ -74,26 +84,27 @@ const MenuItemForm = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-[#440129] font-semibold mb-2">Subcategory</label>
-          <input
-            type="text"
+          <label className="block text-[#440129] font-semibold mb-2">Sub Category</label>
+          <select
             name="subcategory"
             value={formData.subcategory}
             onChange={handleChange}
-            className="p-2 rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
-          />
+            className="p-2 py-[9px] rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
+          >
+            <option value="available">Veg</option>
+            <option value="unavailable">Non Veg</option>
+          </select>
+        </div>
+        
         </div>
         <div className="mb-4">
-          <label className="block text-[#440129] font-semibold mb-2">Availability Status</label>
-          <select
-            name="status"
-            value={formData.status}
+          <label className="block text-[#440129] font-semibold mb-2">Description</label>
+          <textarea
+            name="description"
+            value={formData.description}
             onChange={handleChange}
             className="p-2 rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
-          >
-            <option value="available">Available</option>
-            <option value="unavailable">Unavailable</option>
-          </select>
+          ></textarea>
         </div>
         <div className="flex justify-end">
           <button

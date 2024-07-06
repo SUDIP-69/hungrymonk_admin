@@ -1,5 +1,6 @@
+"use client"
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import rest from "../../assets/rest.jpg";
 import logo from "../../assets/logo.png";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
@@ -8,9 +9,12 @@ import Menucard from "./Components/Menucard";
 import MenuItemForm from "./Components/EditMenuItemModal";
 
 const TableRestaurantSection = () => {
+  const [open, setopen] = useState(false);
+  const handleclose = () => setopen(false);
+  const handleopen = () => setopen(true);
   return (
     <div className="w-full h-full  relative">
-      <MenuItemForm/>
+   
       <Image
         src={rest}
         width={1000}
@@ -27,13 +31,13 @@ const TableRestaurantSection = () => {
           placeholder="Enter a dish"
           className="p-2 pl-10 rounded-md border-[1px] border-[#440129] bg-transparent outline-none focus:ring-[1px] focus:ring-[#440129] focus:border-[#440129]"
         />
-        <button className="ml-2 p-2 bg-[#440129] text-white rounded-md hover:bg-[#6f0143]">
+        <button onClick={handleopen} className="ml-2 p-2 bg-[#440129] text-white rounded-md hover:bg-[#6f0143]">
           <AddRoundedIcon /> Add Category
         </button>
       </div>
       <hr className="border border-[#440129] " />
       <section>
-      <Menucard/>
+      <Menucard open={open} handleopen={handleopen} handleclose={handleclose} />
       </section>
 
       <div className="flex justify-center items-center absolute bottom-0 left-0 w-full">
