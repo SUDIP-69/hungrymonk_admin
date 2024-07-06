@@ -13,6 +13,8 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.21",
+    "@nextui-org/react": "^2.4.2",
+    "@nextui-org/table": "^2.0.36",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "jsonwebtoken": "^9.0.2",

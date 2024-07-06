@@ -1,7 +1,9 @@
 import React from 'react'
-
+import WaiterDetails from './WaiterDetails'
 function MenuBookSection() {
-  return (<div className="bg-green-500 w-full h-full p-4">Menu Book Content</div> 
+  return (<div className="w-full h-full p-4">
+    <WaiterDetails/>
+  </div> 
   )
 }
 
