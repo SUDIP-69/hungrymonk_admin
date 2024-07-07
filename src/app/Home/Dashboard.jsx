@@ -34,6 +34,7 @@ import MenuBookSection from "./MenuBookSection";
 import SettingsComponent from "./SettingsComponent";
 import TableRestaurantSection from "./Menupage";
 import PersonSearchSection from "./WaiterView";
+import WaiterDetails from "./WaiterDetails";
 
 
 function Dashboard({ restaurantinfo }) {
@@ -52,8 +53,8 @@ function Dashboard({ restaurantinfo }) {
       case "tableRestaurant":
         return <PersonSearchSection restaurantinfo={restaurantinfo} />;
       case "personSearch":
-        return <MenuBookSection restaurantinfo={restaurantinfo} />;
-      case "settings":
+        return <WaiterDetails restaurantinfo={restaurantinfo} />;
+      case "settings": 
         return (
           <SettingsComponent
             restaurantinfo={restaurantinfo}
@@ -136,7 +137,7 @@ function Dashboard({ restaurantinfo }) {
           </div>
         </div>
       </div>
-      <section className="w-full h-[95vh] max-h-[150vh] lg:mr-4 lg:ml-0 -ml-8 relative">
+      <section className={`w-full ${(currentSection === "home" ||currentSection === "personSearch" ||currentSection === "settings") ? 'h-[95vh] max-h-[150vh]':'h-full'}  lg:mr-4 lg:ml-0 -ml-8 relative`}>
         {renderSection(currentSection)}
       </section>
     </div>

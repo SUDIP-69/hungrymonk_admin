@@ -21,17 +21,20 @@ export default function Home() {
     toast.loading("Signing in...");
 
     try {
-      const { data: { success, token,restaurantid } } = await axios.post("/api/login", { username: user, password });
+      const {
+        data: { success, token, restaurantid },
+      } = await axios.post("/api/login", { username: user, password });
       toast.dismiss();
-      
+
       if (success) {
         setpassword("");
         setuser("");
         toast.success("Successfully logged in");
         localStorage.setItem("accessToken", token);
+        localStorage.setItem("restaurant_id", restaurantid);
         setTimeout(() => {
           router.push(`/Home/${restaurantid}`);
-        }, 1000);
+        }, 100);
       } else {
         toast.error("Login failed");
       }
@@ -116,7 +119,9 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`flex w-full justify-center rounded-md bg-[#FFF9EA] px-3 py-1.5 text-md font-bold  text-[#440129] tracking-tight shadow-smocus-visible:outline ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`flex w-full justify-center rounded-md bg-[#FFF9EA] px-3 py-1.5 text-md font-bold  text-[#440129] tracking-tight shadow-smocus-visible:outline ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
                 Sign in &nbsp;
                 <LoginRoundedIcon />

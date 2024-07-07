@@ -32,7 +32,7 @@ function HomeSection({restaurantinfo}) {
       </div>
       <Image src={chef} alt="chef" className="absolute bottom-2 right-0 hidden lg:block" width={500} height={100}/>
 
-      <div className="flex justify-center items-center absolute bottom-0 left-0 w-full"><span>powered by </span><Image src={logo} alt="logo" width={100} height={100}/></div>
+      
     </div>
   );
 }

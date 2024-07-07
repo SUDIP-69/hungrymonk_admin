@@ -1,8 +1,10 @@
+// app/layout.js
 import { Inter } from "next/font/google";
 import "./globals.css";
-import {HelpSharp} from "@mui/icons-material";
-import Tooltip from "@mui/material/Tooltip";
+import HelpPortal from "./HelpPortal";
 const inter = Inter({ subsets: ["latin"] });
+import Image from "next/image";
+import logo from "../assets/logo.png";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,12 +16,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         {children}
-        <Tooltip title="Report issue"
-            className={`h-10 w-10 duration-300 fixed right-5 bottom-5 z-50 shadow-lg hover:scale-95 hover:bg-[#440129]  hover:text-white bg-[#440129] text-white  rounded-full `}
-          >
-            <HelpSharp className="p-2" />
-          
-        </Tooltip>
+        <HelpPortal />
+        <div className="flex justify-center items-center bottom-0 left-0 w-full p-4">
+          <span className="text-[#440129]">powered by</span>
+          <Image src={logo} alt="logo" width={100} height={100} />
+        </div>
       </body>
     </html>
   );

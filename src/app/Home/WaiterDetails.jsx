@@ -14,7 +14,7 @@ const WaiterDetails = () => {
   const handleopen = () => setopen(true);
 
   return (
-    <div className="w-full h-full  relative">
+    <div className="w-full h-full  relative  lg:ml-0 ml-16 ">
       <div className="flex justify-between items-center relative p-4">
         <SearchRoundedIcon className="absolute left-6" />
 
@@ -88,10 +88,7 @@ const WaiterDetails = () => {
         </div>
       </section>
 
-      <div className="flex justify-center items-center absolute bottom-0 left-0 w-full">
-        <span>powered by </span>
-        <Image src={logo} alt="logo" width={100} height={100} />
-      </div>
+      
     </div>
   );
 };

@@ -61,6 +61,10 @@ export const restaurantdetailsSchema = new mongoose.Schema(
     noofseatingcapacity: {
       type: String,
     },
+    verified:{
+      type: Boolean,
+      default: false,
+    }
   },
   { timestamps: true }
 );
