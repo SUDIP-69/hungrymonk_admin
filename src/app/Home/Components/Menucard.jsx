@@ -18,14 +18,14 @@ const MenuCardsmall = ({open,handleopen,handleclose}) => {
           objectFit="cover"
         />
       </div>
-      <h3 className="text-sm font-semibold text-[#c10059]">
+      <h3 className="text-sm font-semibold text-[#441029]">
         Pepper Barbecue Chicken
       </h3>
-      <p className="text-[0.65rem] text-gray-600 mb-2">
+      <p className="text-[0.65rem] text-zinc-400 mb-2">
         Hand sorted mushroom tossed in a spicy chilly sauce and indie pepper
       </p>
       <div className="flex justify-between items-center">
-        <span className="text-lg font-bold text-[#c10059]">₹255</span>
+        <span className="text-lg font-bold text-[#44109]">₹255</span>
         <button onClick={handleopen} id='editbutton' className="bg-[#966729] editbutton h-7 w-7 rounded-full text-white">
           <EditIcon className="size-4" />
         </button>

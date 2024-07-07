@@ -249,20 +249,20 @@ function StickyHeadTable() {
             <table className="w-full text-sm text-left text-gray-500 ">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50  ">
                 <tr>
-                  <th scope="col" className="px-4 py-3">
-                    Product name
+                  <th scope="col" className="px-4 uppercase py-3">
+                    table
                   </th>
-                  <th scope="col" className="px-4 py-3">
-                    Category
+                  <th scope="col" className="px-4 uppercase py-3">
+                    Status
                   </th>
-                  <th scope="col" className="px-4 py-3">
-                    Brand
+                  <th scope="col" className="px-4 uppercase py-3">
+                    Waiter
                   </th>
-                  <th scope="col" className="px-4 py-3">
-                    Description
+                  <th scope="col" className="px-4 uppercase py-3">
+                    Order
                   </th>
-                  <th scope="col" className="px-4 py-3">
-                    Price
+                  <th scope="col" className="px-4 uppercase py-3">
+                    Action
                   </th>
                   <th scope="col" className="px-4 py-3">
                     <span className="sr-only">Actions</span>
