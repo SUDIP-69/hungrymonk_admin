@@ -15,9 +15,9 @@ function HomeSection({restaurantinfo}) {
       {restaurantinfo?.restaurantdescription}
       </p>
       <div className="text-center space-x-2 lg:space-x-10 mt-4 font-semibold text-[#440129] tracking-wide text-lg ">
-        <span>Table : 8</span>
-        <span>chef : 8</span>
-        <span>waiter : 8</span>
+        <span>Table : {restaurantinfo?.nooftables}</span>
+        <span>chef : {restaurantinfo?.noofchef}</span>
+        <span>waiter : {restaurantinfo?.noofwaiters}</span>
       </div>
       <div className="w-fit mx-auto ">
         <h1 className="capitalize text-lg px-6 mt-10 tracking-widest text-center font-semibold font-sans">

@@ -34,7 +34,7 @@ export const restaurantdetailsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    restaurantcrestaurantopeninghourslosinghours: {
+    restaurantclosinghours: {
       type: String,
       required: true,
     },
@@ -45,6 +45,21 @@ export const restaurantdetailsSchema = new mongoose.Schema(
     restaurantimage: {
       type: String,
       required: true,
+    },
+    noofchef: {
+      type: String,
+    },
+    noofemployees: {
+      type: String,
+    },
+    nooftables: {
+      type: String,
+    },
+    noofwaiters: {
+      type: String,
+    },
+    noofseatingcapacity: {
+      type: String,
     },
   },
   { timestamps: true }
