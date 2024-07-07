@@ -54,9 +54,7 @@ function SettingsComponent({changesection,restaurantinfo}) {
                 <Tooltip title="Download qrcode">
                   <QrCodeScannerSharpIcon className="text-[#440129] size-8" />
                 </Tooltip>
-                <Tooltip title="Help">
-                  <HelpSharpIcon className="text-[#440129] size-8" />
-                </Tooltip>
+               
                 <button
                   onClick={handlelogout}
                   className="border-[2px] border-[#440129] rounded-lg px-4 py-1"

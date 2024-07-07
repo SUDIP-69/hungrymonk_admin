@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import BugReportIcon from "@mui/icons-material/BugReport";
+import {HelpSharp} from "@mui/icons-material";
 import Tooltip from "@mui/material/Tooltip";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
         <Tooltip title="Report issue"
             className={`h-10 w-10 duration-300 fixed right-5 bottom-5 z-50 shadow-lg hover:scale-95 hover:bg-[#440129]  hover:text-white bg-[#440129] text-white  rounded-full `}
           >
-            <BugReportIcon className="p-2" />
+            <HelpSharp className="p-2" />
           
         </Tooltip>
       </body>
