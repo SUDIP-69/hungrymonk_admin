@@ -415,7 +415,7 @@ function StickyHeadTable() {
               <li>
                 <a
                   href="#"
-                  className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800   dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
                 >
                   <span className="sr-only">Previous</span>
                   <svg
@@ -436,7 +436,7 @@ function StickyHeadTable() {
               <li>
                 <a
                   href="#"
-                  className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800   dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
                 >
                   1
                 </a>
@@ -444,7 +444,7 @@ function StickyHeadTable() {
               <li>
                 <a
                   href="#"
-                  className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800   dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
                 >
                   2
                 </a>
@@ -461,7 +461,7 @@ function StickyHeadTable() {
               <li>
                 <a
                   href="#"
-                  className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800   dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
                 >
                   ...
                 </a>
@@ -469,7 +469,7 @@ function StickyHeadTable() {
               <li>
                 <a
                   href="#"
-                  className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800   dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
                 >
                   100
                 </a>
@@ -477,7 +477,7 @@ function StickyHeadTable() {
               <li>
                 <a
                   href="#"
-                  className="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800   dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
                 >
                   <span className="sr-only">Next</span>
                   <svg
