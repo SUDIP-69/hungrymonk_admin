@@ -99,7 +99,7 @@ function SettingsComponent({ changesection, restaurantinfo }) {
                     </Tooltip>
                     <Tooltip title="Twitter">
                       <a
-                        href="#"
+                        href="https://x.com/baksish24?t=ZkrxibakZ_mMIuljSb9oHw&s=08"
                         className="text-[#440129] hover:scale-110 duration-300 "
                       >
                         <X />
@@ -107,7 +107,7 @@ function SettingsComponent({ changesection, restaurantinfo }) {
                     </Tooltip>
                     <Tooltip title="Instagram">
                       <a
-                        href="#"
+                        href="https://www.instagram.com/amaderinsta?igsh=MTMyZWJzMWg2bWRt"
                         className="text-[#440129] hover:scale-110 duration-300 "
                       >
                         <Instagram />

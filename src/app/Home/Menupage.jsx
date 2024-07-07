@@ -19,6 +19,7 @@ const TableRestaurantSection = () => {
         src={rest}
         width={1000}
         height={1000}
+        alt="restaurant image"
         className="w-full h-[35%] object-cover object-right-bottom z-0 rounded-xl"
       />
       <div className="flex justify-between items-center relative p-4">

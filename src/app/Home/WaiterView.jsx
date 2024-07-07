@@ -19,6 +19,7 @@ function StickyHeadTable() {
         src={rest}
         width={1000}
         height={1000}
+        alt="restaurant image"
         className="w-full h-40 mb-4 object-cover object-top z-0 rounded-xl"
       />
         

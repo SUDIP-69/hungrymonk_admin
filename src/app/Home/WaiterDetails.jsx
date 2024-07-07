@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import rest from "../../assets/rest.jpg";
 import logo from "../../assets/logo.png";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import Menucard from "./Components/Menucard";
+import Menucard from "./Components/Waitercard";
 import MenuItemForm from "./Components/EditMenuItemModal";
 import RowTable from "../Table/Components/RowTable";
 
@@ -26,15 +25,17 @@ const WaiterDetails = () => {
           placeholder="Enter a dish"
           className="p-2 pl-10 rounded-md border-[1px] border-[#440129] bg-transparent outline-none focus:ring-[1px] focus:ring-[#440129] focus:border-[#440129]"
         />
-        <button
-          onClick={handleopen}
-          className="ml-2 p-2 bg-[#440129] text-white rounded-md hover:bg-[#6f0143]"
-        >
-          <AddRoundedIcon /> Add Waiter
-        </button>
+        <hr className="border border-[#440129] " />
+        <section>
+          <Menucard
+            open={open}
+            handleopen={handleopen}
+            handleclose={handleclose}
+          />
+        </section>
       </div>
       <hr className="border border-[#440129] " />
-      
+
       <section className="mt-5">
         <div className="flex flex-col">
           <div className="-m-1.5 overflow-x-auto">
@@ -46,8 +47,7 @@ const WaiterDetails = () => {
                       <th
                         scope="col"
                         className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-                      >
-                      </th>                       
+                      ></th>
                       <th
                         scope="col"
                         className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
