@@ -30,7 +30,6 @@ const authors = [
 ];
 // Example components for each section
 import HomeSection from "./HomeSection";
-import MenuBookSection from "./MenuBookSection";
 import SettingsComponent from "./SettingsComponent";
 import TableRestaurantSection from "./Menupage";
 import PersonSearchSection from "./WaiterView";
@@ -54,6 +53,7 @@ function Dashboard({ restaurantinfo }) {
         return <PersonSearchSection restaurantinfo={restaurantinfo} />;
       case "personSearch":
         return <WaiterDetails restaurantinfo={restaurantinfo} />;
+
       case "settings": 
         return (
           <SettingsComponent
