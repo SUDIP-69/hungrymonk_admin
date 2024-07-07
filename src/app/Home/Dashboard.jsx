@@ -50,9 +50,9 @@ function Dashboard({ restaurantinfo }) {
       case "menuBook":
         return <TableRestaurantSection restaurantinfo={restaurantinfo} />;
       case "tableRestaurant":
-        return <MenuBookSection restaurantinfo={restaurantinfo} />;
-      case "personSearch":
         return <PersonSearchSection restaurantinfo={restaurantinfo} />;
+      case "personSearch":
+        return <MenuBookSection restaurantinfo={restaurantinfo} />;
       case "settings":
         return (
           <SettingsComponent
