@@ -245,46 +245,54 @@ function StickyHeadTable() {
                         page * rowsPerPage + rowsPerPage
                       )
                     : filteredData
-                  ).map((row) => { return(
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row._id}
-                      onClick={() => handleViewOrderDetails(row)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <TableCell>{row.table_number}</TableCell>
-                      <TableCell>{row.order_id}</TableCell>
-                      <TableCell>{new Date(row.createdAt).toLocaleString()}</TableCell>
-                      <TableCell>
-                        <Chip
-                          label={row.order_status}
-                          color={
-                            row.order_status === "waitingforbill"
-                              ? "success"
-                              : row.order_status === "new"||row.order_status === "updated"
-                              ? "warning"
-                              : "default"
-                          }
-                          size="small"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Tooltip
-                          title="View Order Details"
-                          arrow
-                          placement="top"
-                        >
-                          <RemoveRedEye />
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell>{row.total_bill}</TableCell>
-                      <TableCell>
-                       <Chip label="generate Bill" className="bg-[#440129] text-[#fff9ea]"/>
-                      </TableCell>
-                    </TableRow>
-                  )})
+                  ).map((row) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row._id}
+                        onClick={() => handleViewOrderDetails(row)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <TableCell>{row.table_number}</TableCell>
+                        <TableCell>{row.order_id}</TableCell>
+                        <TableCell>
+                          {new Date(row.createdAt).toLocaleString()}
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={row.order_status}
+                            color={
+                              row.order_status === "waitingforbill"
+                                ? "success"
+                                : row.order_status === "new" ||
+                                  row.order_status === "updated"
+                                ? "warning"
+                                : "default"
+                            }
+                            size="small"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Tooltip
+                            title="View Order Details"
+                            arrow
+                            placement="top"
+                          >
+                            <RemoveRedEye />
+                          </Tooltip>
+                        </TableCell>
+                        <TableCell>{row.total_bill}</TableCell>
+                        <TableCell>
+                          <Chip
+                            label="generate Bill"
+                            className="bg-[#440129] text-[#fff9ea]"
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 )}
               </TableBody>
             </Table>
@@ -358,7 +366,6 @@ function StickyHeadTable() {
     </section>
   );
 }
-
 
 export default function PersonSearchSection() {
   return (
