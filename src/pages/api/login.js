@@ -1,5 +1,5 @@
 import connDB from "../../.././middleware/connDB";
-import User from '../../.././model/User'
+import Restaurant_credentials from "../../../model/Restaurant_credentials";
 import bcrypt from 'bcrypt'
 var jwt = require('jsonwebtoken')
 
@@ -9,7 +9,7 @@ const handler = async (req, res) => {
       const { username, password } = req.body;
       //console.log(username, password);
       if (username) {
-        const users = await User.findOne({ username });
+        const users = await Restaurant_credentials.findOne({ username });
         //console.log(users);
         if (users) {
           const ismatch = await bcrypt.compare(password, users.password);

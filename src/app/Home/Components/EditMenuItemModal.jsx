@@ -1,17 +1,30 @@
-"use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { Tooltip } from "@mui/material";
 
-const MenuItemForm = ({ handleclose }) => {
+const MenuItemForm = ({ handleclose, foodItem }) => {
+  console.log(!foodItem?.status);
   const [formData, setFormData] = useState({
-    image: "",
-    name: "",
-    description: "",
-    category: "",
-    subcategory: "",
-    status: "available",
+    image: foodItem?.image || "",
+    name: foodItem?.name || "",
+    description: foodItem?.description || "",
+    category: foodItem?.category || "",
+    subcategory: foodItem?.subcategory || "",
+    status: (!foodItem?.status||foodItem==null)?'': foodItem?.available_status ? 'available' : 'unavailable',
   });
+
+  useEffect(() => {
+    if (foodItem) {
+      setFormData({
+        image: foodItem.image || "",
+        name: foodItem.name || "",
+        description: foodItem.description || "",
+        category: foodItem.category || "",
+        subcategory: foodItem.subcategory || "",
+        status: foodItem?.available_status==true ? 'available' : 'unavailable',
+      });
+    }
+  }, [foodItem]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +48,7 @@ const MenuItemForm = ({ handleclose }) => {
 
   return (
     <div className="fixed z-50 h-screen w-screen top-0 left-0 flex justify-center overflow-x-auto items-center bg-black/20 backdrop-blur-sm">
-      <div className="bg-[#fff9ea] p-6 rounded-md shadow-md max-w-[50vw] mx-auto relative">
+      <div className="bg-[#fff9ea] p-6 rounded-md shadow-md lg:max-w-[50vw] mx-auto relative">
         <Tooltip title="close">
           <span
             onClick={handleclose}
@@ -86,6 +99,7 @@ const MenuItemForm = ({ handleclose }) => {
                 onChange={handleChange}
                 className="p-2 py-[9px] rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
               >
+                <option value="available">Choose Availability</option>
                 <option value="available">Available</option>
                 <option value="unavailable">Unavailable</option>
               </select>
@@ -113,8 +127,9 @@ const MenuItemForm = ({ handleclose }) => {
                 onChange={handleChange}
                 className="p-2 py-[9px] rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
               >
-                <option value="available">Veg</option>
-                <option value="unavailable">Non Veg</option>
+                <option value="">select subcategory</option>
+                <option value="Veg">Veg</option>
+                <option value="Non Veg">Non Veg</option>
               </select>
             </div>
           </div>

@@ -13,29 +13,38 @@ const TableRestaurantSection = () => {
   const [filteredMenus, setFilteredMenus] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const [selectedFoodItem, setSelectedFoodItem] = useState(null);
 
-  const handleClose = () => setOpen(false);
-  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedFoodItem(null);
+  };
+
+  const handleOpen = (foodItem) => {
+    setSelectedFoodItem(foodItem);
+    setOpen(true);
+  };
 
   useEffect(() => {
     const fetchMenuByRestId = async () => {
       const restaurant_id = localStorage.getItem("restaurant_id");
       const { data } = await axios.post(`/api/fetchmenubyid`, {
-        restaurant_id: "12345",
+        restaurant_id: restaurant_id,
       });
-      setMenus(data.data.food_items || []);
-      setFilteredMenus(data.data.food_items || []);
+      setMenus(data?.data?.food_items || []);
+      setFilteredMenus(data?.data?.food_items || []);
     };
     fetchMenuByRestId();
   }, []);
 
   useEffect(() => {
     setFilteredMenus(
-      menus.filter((item) =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.subcategory.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.price.toLowerCase().includes(searchQuery.toLowerCase())
+      menus?.filter(
+        (item) =>
+          item?.name?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+          item?.category.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+          item?.subcategory?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+          item?.price?.toLowerCase().includes(searchQuery?.toLowerCase())
       )
     );
   }, [searchQuery, menus]);
@@ -44,7 +53,7 @@ const TableRestaurantSection = () => {
     setSearchQuery(e.target.value);
   };
 
-  if (menus.length <= 0) {
+  if (menus?.length <= 0) {
     return <Loadingpage />;
   }
 
@@ -70,18 +79,19 @@ const TableRestaurantSection = () => {
           className="p-2 pl-10 rounded-md border-[1px] border-[#440129] bg-transparent outline-none focus:ring-[1px] focus:ring-[#440129] focus:border-[#440129]"
         />
         <button
-          onClick={handleOpen}
+          onClick={() => handleOpen(null)}
           className="ml-2 p-2 bg-[#440129] text-white rounded-md hover:bg-[#6f0143]"
         >
           <AddRoundedIcon /> Add Category
         </button>
       </div>
       <hr className="border border-[#440129]" />
-      {filteredMenus.length > 0 && (
+      {filteredMenus?.length > 0 && (
         <section>
           <Menucard
             menus={{ food_items: filteredMenus }}
             open={open}
+            selectedFoodItem={selectedFoodItem}
             handleOpen={handleOpen}
             handleClose={handleClose}
           />
