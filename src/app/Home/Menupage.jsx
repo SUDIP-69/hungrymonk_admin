@@ -7,6 +7,7 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Menucard from "./Components/Menucard";
 import axios from "axios";
 import Loadingpage from "./Components/Loadingpage";
+import MenuItemForm from "./Components/EditMenuItemModal";
 
 const TableRestaurantSection = () => {
   const [menus, setMenus] = useState([]);
@@ -24,14 +25,17 @@ const TableRestaurantSection = () => {
     setSelectedFoodItem(foodItem);
     setOpen(true);
   };
-
+  const [loader, setloader] = useState(true)
   useEffect(() => {
     const fetchMenuByRestId = async () => {
       const restaurant_id = localStorage.getItem("restaurant_id");
       const { data } = await axios.post(`/api/fetchmenubyid`, {
         restaurant_id: restaurant_id,
       });
-      setMenus(data?.data?.food_items || []);
+      if(data.success){
+      setMenus(data?.data?.food_items);
+    }
+    setloader(false);
       setFilteredMenus(data?.data?.food_items || []);
     };
     fetchMenuByRestId();
@@ -53,7 +57,7 @@ const TableRestaurantSection = () => {
     setSearchQuery(e.target.value);
   };
 
-  if (menus?.length <= 0) {
+  if (loader) {
     return <Loadingpage />;
   }
 
@@ -86,6 +90,8 @@ const TableRestaurantSection = () => {
         </button>
       </div>
       <hr className="border border-[#440129]" />
+      {menus.length==0&&<p className="text-center text-2xl mt-10">You have not added any menu items till now.<br/><br/>
+      Please add items and enjoy our table-to-kitchen service.</p>}
       {filteredMenus?.length > 0 && (
         <section>
           <Menucard
@@ -96,6 +102,9 @@ const TableRestaurantSection = () => {
             handleClose={handleClose}
           />
         </section>
+      )}
+      {open && (
+        <MenuItemForm foodItem={selectedFoodItem} handleclose={handleClose} />
       )}
     </div>
   );

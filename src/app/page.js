@@ -72,7 +72,7 @@ export default function Home() {
           </h2>
         </div>
         <div className="mt-10 sm:mx-auto lg:w-1/3 w-full px-5">
-          <form className="space-y-6" onSubmit={signin}>
+          <form className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -117,7 +117,8 @@ export default function Home() {
             </div>
             <div>
               <button
-                type="submit"
+                type="button"
+                onClick={signin}
                 disabled={loading}
                 className={`flex w-full justify-center rounded-md bg-[#FFF9EA] px-3 py-1.5 text-md font-bold  text-[#440129] tracking-tight shadow-smocus-visible:outline ${
                   loading ? "opacity-50 cursor-not-allowed" : ""

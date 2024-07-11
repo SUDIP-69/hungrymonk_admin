@@ -19,9 +19,7 @@ const Menucard = ({
 
   return (
     <div className="p-4">
-      {open && (
-        <MenuItemForm foodItem={selectedFoodItem} handleclose={handleClose} />
-      )}
+      
       {Object.keys(categories).map((category) => (
         <div key={category}>
           <div className="flex  my-4 items-center justify-start space-x-2">

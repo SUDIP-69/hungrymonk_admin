@@ -66,7 +66,7 @@ function Dashboard({ restaurantinfo }) {
   };
 
   return (
-    <div className="bg-[#fff9ea] min-h-screen w-screen flex items-center">
+    <div className="bg-[#fff9ea] min-h-screen w-screen flex ">
       <div className="w-28">
         <div className="h-[95vh] w-[42px] lg:w-[52px] fixed z-50 top-4 bg-[#44012922] py-10 lg:mx-4 mx-2 lg:ml-10 rounded-[20px]">
           <div className="h-full relative">

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { Tooltip } from "@mui/material";
 
-const MenuItemForm = ({ handleclose }) => {
+const AddWaiterModalForm = ({ handleclose }) => {
   const [formData, setFormData] = useState({
     image: "",
     name: "",
@@ -181,4 +181,4 @@ const MenuItemForm = ({ handleclose }) => {
   );
 };
 
-export default MenuItemForm;
+export default AddWaiterModalForm;

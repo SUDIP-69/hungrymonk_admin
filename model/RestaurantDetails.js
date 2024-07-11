@@ -12,7 +12,6 @@ export const restaurantdetailsSchema = new mongoose.Schema(
     },
     restaurantlocation: {
       type: String,
-      required: true,
     },
     restaurantphoneNo: {
       type: String,
@@ -24,11 +23,10 @@ export const restaurantdetailsSchema = new mongoose.Schema(
     },
     restaurantwebsite: {
       type: String,
-      required: true,
     },
     restaurantaddress: {
       type: String,
-      required: true,
+      required:true,
     },
     restaurantopeninghours: {
       type: String,
@@ -40,7 +38,6 @@ export const restaurantdetailsSchema = new mongoose.Schema(
     },
     restaurantdescription: {
       type: String,
-      required: true,
     },
     restaurantimage: {
       type: String,
@@ -59,6 +56,15 @@ export const restaurantdetailsSchema = new mongoose.Schema(
       type: String,
     },
     noofseatingcapacity: {
+      type: String,
+    },
+    sgst:{
+      type: String,
+    },
+    cgst:{
+      type: String,
+    },
+    gstin:{
       type: String,
     },
     verified:{

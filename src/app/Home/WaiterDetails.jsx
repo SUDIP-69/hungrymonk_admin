@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import rest from "../../assets/rest.jpg";
 import logo from "../../assets/logo.png";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import Menucard from "./Components/Waitercard";
-import MenuItemForm from "./Components/EditMenuItemModal";
+
 import RowTable from "../Table/Components/RowTable";
+
+import AddWaiterModalForm from "./Components/AddWaiterModal";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
 const WaiterDetails = () => {
   const [open, setopen] = useState(false);
@@ -22,16 +24,20 @@ const WaiterDetails = () => {
           type="text"
           name="menu"
           id="menu"
-          placeholder="Enter a dish"
+          placeholder="Search for a waiter"
           className="p-2 pl-10 rounded-md border-[1px] border-[#440129] bg-transparent outline-none focus:ring-[1px] focus:ring-[#440129] focus:border-[#440129]"
         />
         <hr className="border border-[#440129] " />
         <section>
-          <Menucard
-            open={open}
-            handleopen={handleopen}
-            handleclose={handleclose}
-          />
+          <div className="p-4 ">
+            <button
+              onClick={handleopen}
+              className="ml-2 p-2 bg-[#440129] text-white rounded-md hover:bg-[#6f0143]"
+            >
+              <AddRoundedIcon /> Add Waiter
+            </button>
+            {open && <AddWaiterModalForm handleclose={handleclose} />}
+          </div>
         </section>
       </div>
       <hr className="border border-[#440129] " />
@@ -87,8 +93,6 @@ const WaiterDetails = () => {
           </div>
         </div>
       </section>
-
-      
     </div>
   );
 };

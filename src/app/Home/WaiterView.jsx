@@ -11,9 +11,11 @@ import Image from "next/image";
 import rest from "../../assets/rest.jpg";
 import { Chip, Tooltip, Modal, CircularProgress } from "@mui/material";
 import { Add, FilterAlt, RemoveRedEye } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
+import GenerateBillModal from "./GenerateBill";
 
-function StickyHeadTable() {
+function StickyHeadTable({restaurantinfo}) {
   const [data, setData] = React.useState([]);
   const [filteredData, setFilteredData] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -22,7 +24,8 @@ function StickyHeadTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [loading, setLoading] = React.useState(false);
-
+  const [opengeneratemodal, setopengeneratemodal] = React.useState(false);
+  const id = localStorage.getItem("restaurant_id");
   const fetchOrders = async (id) => {
     try {
       setLoading(true);
@@ -37,9 +40,10 @@ function StickyHeadTable() {
       setLoading(false);
     }
   };
-
+  // setInterval(() => {
+  //   fetchOrders(id);
+  // }, 30000);
   React.useEffect(() => {
-    const id = localStorage.getItem("restaurant_id");
     fetchOrders(id);
   }, []);
 
@@ -67,6 +71,7 @@ function StickyHeadTable() {
 
   // Open modal and set selected order
   const handleViewOrderDetails = (order) => {
+    console.log(order);
     setSelectedOrder(order);
     setOpenModal(true);
   };
@@ -76,6 +81,17 @@ function StickyHeadTable() {
     setOpenModal(false);
     setSelectedOrder(null);
   };
+
+  const handleGenerateBillClick = (order) => {
+    console.log(opengeneratemodal)
+    setSelectedOrder(order);
+    setopengeneratemodal(true);
+  };
+  const handleClosegenerateModal=()=>{
+    setopengeneratemodal(false);
+    
+  }
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -218,11 +234,12 @@ function StickyHeadTable() {
                 <TableRow>
                   <TableCell>Table Number</TableCell>
                   <TableCell>Order ID</TableCell>
-                  <TableCell>Ordered At</TableCell>
+                  <TableCell>Ordered Placed At</TableCell>
                   <TableCell>Order Status</TableCell>
-                  <TableCell>Order Items</TableCell>
+                  <TableCell>Order Quantity</TableCell>
                   <TableCell>Total Bill</TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -252,42 +269,74 @@ function StickyHeadTable() {
                         role="checkbox"
                         tabIndex={-1}
                         key={row._id}
-                        onClick={() => handleViewOrderDetails(row)}
-                        style={{ cursor: "pointer" }}
                       >
                         <TableCell>{row.table_number}</TableCell>
-                        <TableCell>{row.order_id}</TableCell>
+                        <TableCell>
+                          {row.order_id.substring(0, 10)}...
+                        </TableCell>
                         <TableCell>
                           {new Date(row.createdAt).toLocaleString()}
                         </TableCell>
                         <TableCell>
                           <Chip
-                            label={row.order_status}
-                            color={
-                              row.order_status === "waitingforbill"
-                                ? "success"
-                                : row.order_status === "new" ||
-                                  row.order_status === "updated"
-                                ? "warning"
-                                : "default"
+                            className={`${
+                              row.order_status === "new"
+                                ? "bg-red-600"
+                                : row.order_status === "waitingforbill"
+                                ? "bg-green-600"
+                                : row.order_status === "updated"
+                                ? "bg-blue-600"
+                                : row.order_status === "served"
+                                ? "bg-yellow-600"
+                                : "bg-gray-500"
+                            } text-white`}
+                            label={
+                              row.order_status === "new"
+                                ? "New"
+                                : row.order_status === "waitingforbill"
+                                ? "Waiting for bill"
+                                : row.order_status === "updated"
+                                ? "Updated"
+                                : row.order_status === "served"
+                                ? "Served"
+                                : "No status"
                             }
+                            // color={
+                            //   row.order_status === "waitingforbill"
+                            //     ? "success"
+                            //     : row.order_status === "new" ||
+                            //       row.order_status === "updated"
+                            //     ? "warning"
+                            //     : "default"
+                            // }
                             size="small"
                           />
                         </TableCell>
                         <TableCell>
-                          <Tooltip
+                          {/* <Tooltip
                             title="View Order Details"
                             arrow
                             placement="top"
                           >
                             <RemoveRedEye />
-                          </Tooltip>
+                          </Tooltip> */}
+                          {row.total_quantity}
                         </TableCell>
-                        <TableCell>{row.total_bill}</TableCell>
+                        <TableCell>₹ {row.total_bill}</TableCell>
                         <TableCell>
                           <Chip
-                            label="generate Bill"
-                            className="bg-[#440129] text-[#fff9ea]"
+                            label="Generate Bill"
+                            style={{ cursor: "pointer" }}
+                            onClick={()=>{handleGenerateBillClick(row)}}
+                            className="bg-[#440129] text-[#fff9ea] px-2 hover:bg-[#820b4f] hover:scale-105"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label="View Order >>"
+                            className="bg-[#2d031b] px-2 text-[#fff9ea] hover:bg-[#820b4f] hover:scale-105"
+                            onClick={() => handleViewOrderDetails(row)}
+                            style={{ cursor: "pointer" }}
                           />
                         </TableCell>
                       </TableRow>
@@ -311,67 +360,118 @@ function StickyHeadTable() {
 
       {/* Modal for viewing order details */}
       <Modal open={openModal} onClose={handleCloseModal}>
-        <div className="bg-white w-96 mx-auto mt-20 p-5 rounded-lg">
+        <div className="relative  bg-white max-h-[80%] overflow-y-auto w-[30%] mx-auto mt-24 p-5 rounded-lg">
+          <button
+            onClick={handleCloseModal}
+            className="absolute top-2 right-2 text-gray-500 border-[1px] rounded-full border-[#440129] p-1 hover:bg-[#440129] hover:text-gray-200"
+          >
+            <CloseIcon fontSize="medium" />
+          </button>
           {selectedOrder && (
             <>
-              <h2 className="text-lg font-semibold mb-3">
-                Order Details - {selectedOrder.order_id}
+              <h2 className="text-lg text-center font-semibold py-1">
+                Order Details
               </h2>
+              <hr className="mb-4 mt-1 border-[0.1px] border-black" />
               <div className="flex flex-col space-y-2">
-                <div className="flex justify-between">
+                <div className="flex justify-start space-x-2">
                   <span className="font-semibold">Table Number:</span>
                   <span>{selectedOrder.table_number}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="font-semibold">Order ID:</span>
-                  <span>{selectedOrder.order_id}</span>
+                <div className="flex justify-start space-x-2 ">
+                  <span className="font-semibold text-sm">Order ID:</span>
+                  <span className="text-sm">{selectedOrder.order_id}</span>
                 </div>
-                <div className="flex justify-between">
+                {/* <div className="flex justify-between">
                   <span className="font-semibold">Customer ID:</span>
                   <span>{selectedOrder.customer_id}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-semibold">Status:</span>
-                  <span>
-                    <Chip
-                      label={selectedOrder.status}
-                      color={
-                        selectedOrder.status === "Completed"
-                          ? "success"
-                          : selectedOrder.status === "Pending"
-                          ? "warning"
-                          : "default"
-                      }
-                    />
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-semibold">Order Items:</span>
-                  {selectedOrder.order_items.map((item, index) => (
+                </div> */}
+              </div>
+              {/* <hr className="border-[1px] border-dotted border-black my-4"/> */}
+              <div className="flex mt-3 justify-start space-x-4">
+                <span className="font-semibold">Status:</span>
+                <span>
+                  <Chip
+                    className={`${
+                      selectedOrder.order_status === "new"
+                        ? "bg-red-600"
+                        : selectedOrder.order_status === "waitingforbill"
+                        ? "bg-green-600"
+                        : selectedOrder.order_status === "updated"
+                        ? "bg-blue-600"
+                        : selectedOrder.order_status === "served"
+                        ? "bg-yellow-600"
+                        : "bg-gray-500"
+                    } text-white py-0 px-2`}
+                    label={
+                      selectedOrder.order_status === "new"
+                        ? "New Order"
+                        : selectedOrder.order_status === "waitingforbill"
+                        ? "Waiting for bill"
+                        : selectedOrder.order_status === "updated"
+                        ? "Updated Order"
+                        : selectedOrder.order_status === "served"
+                        ? "Served"
+                        : "No status"
+                    }
+                  />
+                </span>
+              </div>
+              <hr className="border-[1px] border-dotted border-black my-4" />
+              <div className="flex flex-col">
+                <span className="font-semibold mb-1">Order Items:</span>
+                {/* {selectedOrder.order_items.map((item, index) => (
                     <div key={index} className="flex justify-between">
                       <span>{item.food_name}</span>
                       <span>{item.quantity}</span>
                     </div>
-                  ))}
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-semibold">Total Bill:</span>
-                  <span>{selectedOrder.total_bill}</span>
-                </div>
+                  ))} */}
+                {selectedOrder.order_items.map((orderitems, j) => (
+                  <span key={j}>
+                    {orderitems.items.map((item, k) => (
+                      <div key={k} className="flex justify-between">
+                        <span>
+                          {item.food.name}&nbsp;&nbsp;x {item.quantity}
+                        </span>
+                        <span>
+                          ₹
+                          {parseFloat(item.quantity) *
+                            parseFloat(item.food.price)}
+                        </span>
+                      </div>
+                    ))}
+                  </span>
+                ))}
+              </div>
+
+              <hr className="border-[1px] border-dashed border-black my-4" />
+              <div className="flex justify-between">
+                <span className="font-semibold">Amount:</span>
+                <span>₹ {selectedOrder.initial_bill}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-semibold">GST and Service Tax:</span>
+                <span>₹ {selectedOrder.tax}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-semibold">Total Amount:</span>
+                <span>₹ {selectedOrder.total_bill}</span>
               </div>
             </>
           )}
         </div>
       </Modal>
+          {/* Modal for generating bill */}
+      {opengeneratemodal&&<GenerateBillModal open={opengeneratemodal} onClose={handleClosegenerateModal} selectedOrder={selectedOrder} restaurantinfo={restaurantinfo}/>}
     </section>
   );
 }
 
-export default function PersonSearchSection() {
+export default function PersonSearchSection({restaurantinfo}) {
   return (
     <>
       <div className="p-4 relative min-h-[95vh]">
-        <StickyHeadTable />
+        <StickyHeadTable restaurantinfo={restaurantinfo}/>
       </div>
     </>
   );

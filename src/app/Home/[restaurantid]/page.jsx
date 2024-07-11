@@ -8,7 +8,7 @@ async function page({ params }) {
   let restaurantinfo;
   try {
     const { data } = await axios.post(
-      "http://localhost:3000/api/getrestaurantdetails",
+      `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/getrestaurantdetails`,
       { restaurantid }
     );
     restaurantinfo = data.data;
