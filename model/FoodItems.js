@@ -26,4 +26,4 @@ const foodItemsSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-export const FoodItems = mongoose.models.FoodItems || mongoose.model('FoodItems', foodItemsSchema);
+export default mongoose.models.FoodItems || mongoose.model('FoodItems', foodItemsSchema);

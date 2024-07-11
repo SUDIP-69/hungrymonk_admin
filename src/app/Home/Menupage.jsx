@@ -9,33 +9,37 @@ import axios from "axios";
 import Loadingpage from "./Components/Loadingpage";
 import MenuItemForm from "./Components/EditMenuItemModal";
 
-const TableRestaurantSection = () => {
+const TableRestaurantSection = ({ restaurantinfo }) => {
+  const { restaurantname, restaurantid } = restaurantinfo;
   const [menus, setMenus] = useState([]);
   const [filteredMenus, setFilteredMenus] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedFoodItem, setSelectedFoodItem] = useState(null);
+  const [update, setupdate] = useState(false)
 
   const handleClose = () => {
     setOpen(false);
     setSelectedFoodItem(null);
   };
 
-  const handleOpen = (foodItem) => {
+  const handleOpen = (foodItem,update=false) => {
+    if(update) setupdate(true);
     setSelectedFoodItem(foodItem);
     setOpen(true);
   };
-  const [loader, setloader] = useState(true)
+  const [loader, setloader] = useState(true);
   useEffect(() => {
+    // console.log(restaurantname, restaurantid);
     const fetchMenuByRestId = async () => {
       const restaurant_id = localStorage.getItem("restaurant_id");
       const { data } = await axios.post(`/api/fetchmenubyid`, {
         restaurant_id: restaurant_id,
       });
-      if(data.success){
-      setMenus(data?.data?.food_items);
-    }
-    setloader(false);
+      if (data.success) {
+        setMenus(data?.data?.food_items);
+      }
+      setloader(false);
       setFilteredMenus(data?.data?.food_items || []);
     };
     fetchMenuByRestId();
@@ -47,7 +51,9 @@ const TableRestaurantSection = () => {
         (item) =>
           item?.name?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
           item?.category.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-          item?.subcategory?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+          item?.subcategory
+            ?.toLowerCase()
+            .includes(searchQuery?.toLowerCase()) ||
           item?.price?.toLowerCase().includes(searchQuery?.toLowerCase())
       )
     );
@@ -90,8 +96,14 @@ const TableRestaurantSection = () => {
         </button>
       </div>
       <hr className="border border-[#440129]" />
-      {menus.length==0&&<p className="text-center text-2xl mt-10">You have not added any menu items till now.<br/><br/>
-      Please add items and enjoy our table-to-kitchen service.</p>}
+      {menus.length == 0 && (
+        <p className="text-center text-2xl mt-10">
+          You have not added any menu items till now.
+          <br />
+          <br />
+          Please add items and enjoy our table-to-kitchen service.
+        </p>
+      )}
       {filteredMenus?.length > 0 && (
         <section>
           <Menucard
@@ -104,7 +116,7 @@ const TableRestaurantSection = () => {
         </section>
       )}
       {open && (
-        <MenuItemForm foodItem={selectedFoodItem} handleclose={handleClose} />
+        <MenuItemForm update={update} restaurantid={restaurantid} restaurantname={restaurantname} foodItem={selectedFoodItem} handleclose={handleClose} />
       )}
     </div>
   );

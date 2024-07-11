@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import TableRestaurantIcon from "@mui/icons-material/TableRestaurant";
@@ -7,27 +7,6 @@ import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import SettingsSharpIcon from "@mui/icons-material/SettingsSharp";
 import Tooltip from "@mui/material/Tooltip";
 
-const authors = [
-  {
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    function: "Manager",
-    organization: "Organization",
-    status: "ONLINE",
-    employed: "23/04/18",
-    img: "/path/to/image", // Replace with the actual image path
-  },
-  {
-    name: "Alexa Liras",
-    email: "alexa@creative-tim.com",
-    function: "Programator",
-    organization: "Developer",
-    status: "OFFLINE",
-    employed: "11/01/19",
-    img: "/path/to/image", // Replace with the actual image path
-  },
-  // Add more authors as needed
-];
 // Example components for each section
 import HomeSection from "./HomeSection";
 import SettingsComponent from "./SettingsComponent";
@@ -36,10 +15,20 @@ import PersonSearchSection from "./WaiterView";
 import WaiterDetails from "./WaiterDetails";
 
 function Dashboard({ restaurantinfo }) {
-  //console.log(restaurantinfo);
   const [currentSection, setCurrentSection] = useState("home");
+
+  useEffect(() => {
+    // Load the saved section from localStorage on client side
+    const savedSection = localStorage.getItem("currentSection");
+    if (savedSection) {
+      setCurrentSection(savedSection);
+    }
+  }, []);
+
   const changesection = (section) => {
     setCurrentSection(section);
+    // Save the current section to localStorage
+    localStorage.setItem("currentSection", section);
   };
 
   const renderSection = (currentSection) => {
@@ -52,7 +41,6 @@ function Dashboard({ restaurantinfo }) {
         return <PersonSearchSection restaurantinfo={restaurantinfo} />;
       case "personSearch":
         return <WaiterDetails restaurantinfo={restaurantinfo} />;
-
       case "settings":
         return (
           <SettingsComponent
@@ -73,8 +61,8 @@ function Dashboard({ restaurantinfo }) {
             <div className="flex flex-col items-center justify-start space-y-10">
               <Tooltip title="Home">
                 <button
-                  onClick={() => setCurrentSection("home")}
-                  className={`h-10 w-10 duration-300  rounded-full ${
+                  onClick={() => changesection("home")}
+                  className={`h-10 w-10 duration-300 rounded-full ${
                     currentSection === "home"
                       ? "bg-[#440129] text-white"
                       : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
@@ -85,11 +73,11 @@ function Dashboard({ restaurantinfo }) {
               </Tooltip>
               <Tooltip title="Menu Book">
                 <button
-                  onClick={() => setCurrentSection("menuBook")}
+                  onClick={() => changesection("menuBook")}
                   className={`h-10 w-10 duration-300 rounded-full ${
                     currentSection === "menuBook"
                       ? "bg-[#440129] text-white"
-                      : "hover:scale-95 hover:bg-[#440129] bg-white  text-[#440129] hover:text-white"
+                      : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
                   }`}
                 >
                   <MenuBookIcon />
@@ -97,8 +85,8 @@ function Dashboard({ restaurantinfo }) {
               </Tooltip>
               <Tooltip title="Table Restaurant">
                 <button
-                  onClick={() => setCurrentSection("tableRestaurant")}
-                  className={`h-10 w-10 duration-300  rounded-full ${
+                  onClick={() => changesection("tableRestaurant")}
+                  className={`h-10 w-10 duration-300 rounded-full ${
                     currentSection === "tableRestaurant"
                       ? "bg-[#440129] text-white"
                       : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
@@ -109,8 +97,8 @@ function Dashboard({ restaurantinfo }) {
               </Tooltip>
               <Tooltip title="Person Search">
                 <button
-                  onClick={() => setCurrentSection("personSearch")}
-                  className={`h-10 w-10 duration-300  rounded-full ${
+                  onClick={() => changesection("personSearch")}
+                  className={`h-10 w-10 duration-300 rounded-full ${
                     currentSection === "personSearch"
                       ? "bg-[#440129] text-white"
                       : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
@@ -120,11 +108,10 @@ function Dashboard({ restaurantinfo }) {
                 </button>
               </Tooltip>
             </div>
-
             <Tooltip title="Settings">
               <button
-                onClick={() => setCurrentSection("settings")}
-                className={`h-10 w-10 duration-300  rounded-full absolute bottom-2 lg:left-[6px] left-[1px] ${
+                onClick={() => changesection("settings")}
+                className={`h-10 w-10 duration-300 rounded-full absolute bottom-2 lg:left-[6px] left-[1px] ${
                   currentSection === "settings"
                     ? "bg-[#440129] text-white"
                     : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
