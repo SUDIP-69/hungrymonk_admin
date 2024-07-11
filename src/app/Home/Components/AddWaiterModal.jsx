@@ -2,15 +2,19 @@
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { Tooltip } from "@mui/material";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
-const AddWaiterModalForm = ({ handleclose }) => {
+const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
+  console.log(restaurantinfo);
   const [formData, setFormData] = useState({
     image: "",
     name: "",
-    description: "",
-    category: "",
-    subcategory: "",
-    status: "available",
+    age: "",
+    email: "",
+    phoneno: "",
+    gender: "Male",
+    profession: "Waiter",
   });
 
   const handleChange = (e) => {
@@ -28,14 +32,43 @@ const AddWaiterModalForm = ({ handleclose }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form Data:", formData);
+    try {
+      const res = await axios.post("/api/addwaiter", {
+        formData,
+        id: restaurantinfo.restaurantid,
+      });
+      console.log(res.data.success);
+      if(res.data.success){
+        toast.success("Waiter added successfully")
+        setTimeout(() => {
+          resetform();
+          handleclose();
+        }, 1000);
+        
+      }
+    } catch (e) {
+      console.log;
+    }
+  };
+  const resetform = () => {
+    setFormData({
+      image: "",
+      name: "",
+      age: "",
+      email: "",
+      phoneno: "",
+      gender: "Male",
+      profession: "Waiter",
+    });
   };
 
   return (
     <div className="fixed z-50 h-screen w-screen top-0 left-0 flex justify-center overflow-x-auto items-center bg-black/20 backdrop-blur-sm">
       <div className="bg-[#fff9ea] p-6 rounded-md shadow-md max-w-[50vw] mx-auto relative">
+        <Toaster/>
         <Tooltip title="close">
           <span
             onClick={handleclose}
@@ -81,7 +114,7 @@ const AddWaiterModalForm = ({ handleclose }) => {
                 Phone Number
               </label>
               <input
-                type="number"
+                type="text"
                 name="phoneno"
                 value={formData.phoneno}
                 onChange={handleChange}
@@ -110,8 +143,8 @@ const AddWaiterModalForm = ({ handleclose }) => {
                 onChange={handleChange}
                 className="p-2 py-[9px] rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
               >
-                <option value="available">Male</option>
-                <option value="unavailable">Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </div>
 
@@ -137,8 +170,8 @@ const AddWaiterModalForm = ({ handleclose }) => {
                 onChange={handleChange}
                 className="p-2 py-[9px] rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
               >
-                <option value="available">Waiter</option>
-                <option value="unavailable">Chef</option>
+                <option value="Waiter">Waiter</option>
+                <option value="Chef">Chef</option>
               </select>
             </div>
           </div>
@@ -154,22 +187,14 @@ const AddWaiterModalForm = ({ handleclose }) => {
           <div className="flex justify-end">
             <button
               type="button"
-              onClick={() =>
-                setFormData({
-                  image: "",
-                  name: "",
-                  description: "",
-                  category: "",
-                  subcategory: "",
-                  status: "available",
-                })
-              }
+              onClick={resetform}
               className="bg-[#440129] text-white py-2 px-4 rounded-md mr-2"
             >
               Reset
             </button>
             <button
-              type="submit"
+              type="button"
+              onClick={handleSubmit}
               className="bg-[#440129] text-white py-2 px-4 rounded-md"
             >
               Save

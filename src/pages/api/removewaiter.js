@@ -4,8 +4,8 @@ import Waiter from "../../../model/Waiter";
 const handler = async (req, res) => {
   try {
     if (req.method === 'POST') {
-      const {restaurant_id} = req.body;
-      const waiters = await Waiter.find({restaurant_id});
+      const {waiterId} = req.body;
+      const waiters = await Waiter.findByIdAndDelete(waiterId);
       res.status(200).json({ success: true, data: waiters });
     } else {
       res.status(405).json({ success: false, error: "Method not allowed" });

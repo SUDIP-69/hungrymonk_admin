@@ -14,6 +14,12 @@ const restaurantItemsSchema = new mongoose.Schema(
         ref: "FoodItems",
       },
     ],
+    cgst:{
+      type:String,
+    },
+    sgst:{
+      type:String,
+    },
   },
   { timestamps: true }
 );
