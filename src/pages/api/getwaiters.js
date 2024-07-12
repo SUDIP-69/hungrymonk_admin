@@ -1,11 +1,11 @@
 import connDB from "../../../middleware/connDB";
-import Waiter from "../../../model/Waiter";
+import Waiter_credentials from "../../../model/Waiter_credentials";
 
 const handler = async (req, res) => {
   try {
     if (req.method === 'POST') {
       const {restaurant_id} = req.body;
-      const waiters = await Waiter.find({restaurant_id});
+      const waiters = await Waiter_credentials.find({restaurant_id});
       res.status(200).json({ success: true, data: waiters });
     } else {
       res.status(405).json({ success: false, error: "Method not allowed" });

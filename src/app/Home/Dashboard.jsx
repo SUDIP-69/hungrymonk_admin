@@ -13,6 +13,7 @@ import SettingsComponent from "./SettingsComponent";
 import TableRestaurantSection from "./Menupage";
 import PersonSearchSection from "./WaiterView";
 import WaiterDetails from "./WaiterDetails";
+import { CurrencyRupeeOutlined, LibraryAddCheck } from "@mui/icons-material";
 
 function Dashboard({ restaurantinfo }) {
   const [currentSection, setCurrentSection] = useState("home");
@@ -48,74 +49,94 @@ function Dashboard({ restaurantinfo }) {
             changesection={changesection}
           />
         );
+      case "ConfirmedOrders":
+        return <HomeSection restaurantinfo={restaurantinfo} />;
       default:
-        return <HomeSection />;
+        return <HomeSection restaurantinfo={restaurantinfo} />;
     }
   };
 
   return (
-    <div className="bg-[#fff9ea] min-h-screen w-screen flex ">
+    <div className="bg-[#fff9ea] min-h-screen w-screen flex">
       <div className="w-28">
         <div className="h-[95vh] w-[42px] lg:w-[52px] fixed z-50 top-4 bg-[#44012922] py-10 lg:mx-4 mx-2 lg:ml-10 rounded-[20px]">
           <div className="h-full relative">
             <div className="flex flex-col items-center justify-start space-y-10">
-              <Tooltip title="Home">
+              <Tooltip title="Home" arrow>
                 <button
                   onClick={() => changesection("home")}
-                  className={`h-10 w-10 duration-300 rounded-full ${
+                  className={`h-10 w-10 duration-300 rounded-full flex items-center justify-center ${
                     currentSection === "home"
                       ? "bg-[#440129] text-white"
                       : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
                   }`}
+                  aria-label="Home"
                 >
                   <HomeIcon />
                 </button>
               </Tooltip>
-              <Tooltip title="Menu Book">
+              <Tooltip title="Menu Card" arrow>
                 <button
                   onClick={() => changesection("menuBook")}
-                  className={`h-10 w-10 duration-300 rounded-full ${
+                  className={`h-10 w-10 duration-300 rounded-full flex items-center justify-center ${
                     currentSection === "menuBook"
                       ? "bg-[#440129] text-white"
                       : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
                   }`}
+                  aria-label="Menu Card"
                 >
                   <MenuBookIcon />
                 </button>
               </Tooltip>
-              <Tooltip title="Table Restaurant">
+              <Tooltip title="Current Orders" arrow>
                 <button
                   onClick={() => changesection("tableRestaurant")}
-                  className={`h-10 w-10 duration-300 rounded-full ${
+                  className={`h-10 w-10 duration-300 rounded-full flex items-center justify-center ${
                     currentSection === "tableRestaurant"
                       ? "bg-[#440129] text-white"
                       : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
                   }`}
+                  aria-label="Current Orders"
                 >
                   <TableRestaurantIcon />
                 </button>
               </Tooltip>
-              <Tooltip title="Person Search">
+              <Tooltip title="Waiter Details" arrow>
                 <button
                   onClick={() => changesection("personSearch")}
-                  className={`h-10 w-10 duration-300 rounded-full ${
+                  className={`h-10 w-10 duration-300 rounded-full flex items-center justify-center ${
                     currentSection === "personSearch"
                       ? "bg-[#440129] text-white"
                       : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
                   }`}
+                  aria-label="Waiter Details"
                 >
                   <PersonSearchIcon />
                 </button>
               </Tooltip>
+              <Tooltip title="M" arrow>
+                <button
+                  onClick={() => changesection("ConfirmedOrders")}
+                  className={`h-10 w-10 duration-300 rounded-full flex items-center justify-center ${
+                    currentSection === "ConfirmedOrders"
+                      ? "bg-[#440129] text-white"
+                      : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
+                  }`}
+                  aria-label="Confirmed Orders"
+                >
+                  <CurrencyRupeeOutlined />
+                </button>
+              </Tooltip>
             </div>
-            <Tooltip title="Settings">
+            <Tooltip title="Settings" arrow>
               <button
                 onClick={() => changesection("settings")}
-                className={`h-10 w-10 duration-300 rounded-full absolute bottom-2 lg:left-[6px] left-[1px] ${
+                className={`h-10 w-10 duration-300 rounded-full flex items-center justify-center absolute bottom-2 lg:left-[6px] left-[1px] ${
                   currentSection === "settings"
                     ? "bg-[#440129] text-white"
                     : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
                 }`}
+                aria-label="Settings"
               >
                 <SettingsSharpIcon />
               </button>

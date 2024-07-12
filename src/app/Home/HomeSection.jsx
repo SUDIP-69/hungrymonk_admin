@@ -7,7 +7,7 @@ function HomeSection({restaurantinfo}) {
     <div className=" w-full h-full p-4 lg:overflow-hidden overflow-y-auto pt-10 font-sans relative ">
       <div className="w-fit mx-auto ">
         <h1 className="capitalize text-[#440129] text-5xl px-10 tracking-widest text-center font-semibold font-sans">
-          taste of china
+          {restaurantinfo?.restaurantname}
         </h1>
         <hr className="border mt-1 border-[#440129]" />
       </div>

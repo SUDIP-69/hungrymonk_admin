@@ -5,8 +5,8 @@ import foodimg from "../../../assets/roti.jpg";
 
 const MenuCardsmall = ({ foodItem, handleOpen }) => {
   return (
-    <div className="border-2 border-[#966729] p-2 rounded-lg shadow-md w-64">
-      <div className="relative h-32 w-full rounded-md overflow-hidden mb-4">
+    <div className="border-2 border-[#966729] p-2 rounded-lg shadow-md w-56">
+      <div className="relative h-24 w-full rounded-md overflow-hidden mb-4">
         <Image
           src={foodItem.image || foodimg}
           className="object-cover object-bottom"
@@ -18,7 +18,7 @@ const MenuCardsmall = ({ foodItem, handleOpen }) => {
       </div>
       <h3 className="text-sm font-semibold text-[#441029]">{foodItem.name}</h3>
       <p className="text-[0.65rem] text-zinc-400 mb-2">
-        {foodItem.description}
+        {foodItem.description.slice(0,90)}...
       </p>
       <div className="flex justify-between items-center">
         <span className="text-lg font-bold text-[#44109]">

@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-
 const waiterSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
     },
@@ -12,6 +11,7 @@ const waiterSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      required: true,
     },
     restaurant_id: {
       type: String,
@@ -32,12 +32,15 @@ const waiterSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    password:{
-      type:String,
-    }
+    password: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-const Waiter = mongoose.models.Waiter || mongoose.model("Waiter", waiterSchema);
-export default Waiter;
+const Waiter_credentials =
+  mongoose.models.Waiter_credentials ||
+  mongoose.model("Waiter_credentials", waiterSchema);
+export default Waiter_credentials;

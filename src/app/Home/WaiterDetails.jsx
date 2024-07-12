@@ -48,6 +48,7 @@ const WaiterDetails = ({ restaurantinfo }) => {
     } else {
       toast.error("Failed to remove waiter");
     }
+    window.location.reload();
   };
 
   return (
@@ -101,31 +102,31 @@ const WaiterDetails = ({ restaurantinfo }) => {
                           scope="col"
                           className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                         >
+                          Image
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                        >
                           Name
                         </th>
                         <th
                           scope="col"
                           className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                         >
-                          Email
+                           Email
                         </th>
                         <th
                           scope="col"
                           className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                         >
-                          Phone No.
+                               Phone No.
                         </th>
                         <th
                           scope="col"
                           className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                         >
                           Profession
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase"
-                        >
-                          Image
                         </th>
                       </tr>
                     </thead>
