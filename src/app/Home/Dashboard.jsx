@@ -14,6 +14,7 @@ import TableRestaurantSection from "./Menupage";
 import PersonSearchSection from "./WaiterView";
 import WaiterDetails from "./WaiterDetails";
 import { CurrencyRupeeOutlined, LibraryAddCheck } from "@mui/icons-material";
+import Collections from "./Collections";
 
 function Dashboard({ restaurantinfo }) {
   const [currentSection, setCurrentSection] = useState("home");
@@ -42,6 +43,8 @@ function Dashboard({ restaurantinfo }) {
         return <PersonSearchSection restaurantinfo={restaurantinfo} />;
       case "personSearch":
         return <WaiterDetails restaurantinfo={restaurantinfo} />;
+        case "Collections":
+          return <Collections restaurantinfo={restaurantinfo} />;
       case "settings":
         return (
           <SettingsComponent
@@ -114,15 +117,15 @@ function Dashboard({ restaurantinfo }) {
                   <PersonSearchIcon />
                 </button>
               </Tooltip>
-              <Tooltip title="M" arrow>
+              <Tooltip title="Collections" arrow>
                 <button
-                  onClick={() => changesection("ConfirmedOrders")}
+                  onClick={() => changesection("Collections")}
                   className={`h-10 w-10 duration-300 rounded-full flex items-center justify-center ${
-                    currentSection === "ConfirmedOrders"
+                    currentSection === "Collections"
                       ? "bg-[#440129] text-white"
                       : "hover:scale-95 hover:bg-[#440129] bg-white text-[#440129] hover:text-white"
                   }`}
-                  aria-label="Confirmed Orders"
+                  aria-label="Collections"
                 >
                   <CurrencyRupeeOutlined />
                 </button>

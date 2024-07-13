@@ -23,6 +23,8 @@ const waiterValidationSchema = Yup.object().shape({
 });
 
 const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
+  const [loading, setLoading] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       image: "",
@@ -36,6 +38,7 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
     validationSchema: waiterValidationSchema,
     onSubmit: async (values, { resetForm }) => {
       console.log("Form Data:", values);
+      setLoading(true);
       try {
         const res = await axios.post("/api/addwaiter", {
           formData: values,
@@ -53,6 +56,8 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
       } catch (e) {
         console.log(e);
         toast.error("Error adding waiter");
+      } finally {
+        setLoading(false);
       }
     },
   });
@@ -90,6 +95,7 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
               accept="image/*"
               onChange={handleImageChange}
               className="block w-full text-[#440129]"
+              disabled={loading}
             />
             {formik.values.image && (
               <img
@@ -116,6 +122,7 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className="p-2 rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
+                disabled={loading}
               />
               {formik.errors.name && formik.touched.name && (
                 <p className="form-error p-[2px] text-[0.65rem] text-rose-500">
@@ -134,6 +141,7 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className="p-2 rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
+                disabled={loading}
               />
               {formik.errors.phoneno && formik.touched.phoneno && (
                 <p className="form-error p-[2px] text-[0.65rem] text-rose-500">
@@ -152,6 +160,7 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className="p-2 rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
+                disabled={loading}
               />
               {formik.errors.email && formik.touched.email && (
                 <p className="form-error p-[2px] text-[0.65rem] text-rose-500">
@@ -169,6 +178,7 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className="p-2 py-[9px] rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
+                disabled={loading}
               >
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -179,7 +189,6 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
                 </p>
               )}
             </div>
-
             <div className="mb-4">
               <label className="block text-[#440129] font-semibold mb-2">
                 Age
@@ -191,6 +200,7 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className="p-2 rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
+                disabled={loading}
               />
               {formik.errors.age && formik.touched.age && (
                 <p className="form-error p-[2px] text-[0.65rem] text-rose-500">
@@ -208,6 +218,7 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className="p-2 py-[9px] rounded-md border-2 w-full text-[#440129] focus:border-[#440129]"
+                disabled={loading}
               >
                 <option value="Waiter">Waiter</option>
                 <option value="Chef">Chef</option>
@@ -224,14 +235,39 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
               type="button"
               onClick={() => formik.resetForm()}
               className="bg-[#440129] text-white py-2 px-4 rounded-md mr-2"
+              disabled={loading}
             >
               Reset
             </button>
             <button
               type="submit"
-              className="bg-[#440129] text-white py-2 px-4 rounded-md"
+              className="bg-[#440129] text-white py-2 px-4 rounded-md flex items-center"
+              disabled={loading}
             >
-              Save
+              {loading ? (
+                <svg
+                  className="animate-spin h-5 w-5 mr-2 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              ) : (
+                "Save"
+              )}
             </button>
           </div>
         </form>
