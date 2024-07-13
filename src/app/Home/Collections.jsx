@@ -91,7 +91,7 @@ function Collections({ restaurantinfo }) {
   };
 
   const filteredOrders = orders.filter((order) =>
-    order.total_bill.toLowerCase().includes(orderSearchQuery.toLowerCase())
+    order.total_bill.toLowerCase().includes(orderSearchQuery.toLowerCase()) || order.order_id.toLowerCase().includes(orderSearchQuery.toLowerCase())
   );
 
   const filteredTips = tips.filter(
@@ -139,7 +139,7 @@ function Collections({ restaurantinfo }) {
             <FormControl variant="outlined" size="small">
               <InputLabel>Sort</InputLabel>
               <Select value={orderSort} onChange={handleOrderSortChange} label="Sort">
-                <MenuItem value="daily">Daily</MenuItem>
+                <MenuItem value="daily">Today</MenuItem>
                 <MenuItem value="yesterday">Yesterday</MenuItem>
                 <MenuItem value="past7days">Past 7 Days</MenuItem>
                 <MenuItem value="past30days">Past 30 Days</MenuItem>
@@ -170,9 +170,9 @@ function Collections({ restaurantinfo }) {
                       .map((order) => (
                         <TableRow key={order._id}>
                           <TableCell component="th" scope="row">
-                            {order._id}
+                            {order.order_id}
                           </TableCell>
-                          <TableCell align="right">{order.total_bill}</TableCell>
+                          <TableCell align="right">₹ {order.total_bill}</TableCell>
                           <TableCell align="right">{new Date(order.createdAt).toDateString()}</TableCell>
                         </TableRow>
                       ))}
@@ -227,8 +227,8 @@ function Collections({ restaurantinfo }) {
                   <TableHead>
                     <TableRow>
                       <TableCell>Tip Amount</TableCell>
-                      <TableCell align="right">Waiter Name</TableCell>
-                      <TableCell align="right">Review</TableCell>
+                      <TableCell align="">Waiter Name</TableCell>
+                      <TableCell align="">Review</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -240,18 +240,18 @@ function Collections({ restaurantinfo }) {
                       .map((tip, index) => (
                         <TableRow key={index}>
                           <TableCell component="th" scope="row">
-                            {tip.amount}
+                            ₹ {parseFloat(tip.amount)/100}
                           </TableCell>
-                          <TableCell align="right">
+                          <TableCell align="">
                             {tip.employees.length > 0 ? (
                               tip.employees.map((item, i) => (
-                                <span key={i}>{item}</span>
+                                <span key={i}>{item};&nbsp;</span>
                               ))
                             ) : (
                               <span>For the team</span>
                             )}
                           </TableCell>
-                          <TableCell align="right">{tip.review || "NA"}</TableCell>
+                          <TableCell align="">{tip.review || "NA"}</TableCell>
                         </TableRow>
                       ))}
                   </TableBody>

@@ -8,7 +8,7 @@ const handler = async (req, res) => {
 
       // Fetch all orders for the given restaurant_id
       const orders = await Transaction.find({ restaurant_id ,paymentstatus:"success"});
-
+      console.log(orders)
       if (orders.length >0 ) {
         // Calculate the start and end of the current day
         const startOfDay = new Date();

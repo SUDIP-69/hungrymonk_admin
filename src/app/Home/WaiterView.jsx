@@ -10,10 +10,11 @@ import TableRow from "@mui/material/TableRow";
 import Image from "next/image";
 import rest from "../../assets/rest.jpg";
 import { Chip, Tooltip, Modal, CircularProgress } from "@mui/material";
-import { Add, FilterAlt, RemoveRedEye } from "@mui/icons-material";
+import { Add, Delete, FilterAlt, RemoveRedEye } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import GenerateBillModal from "./GenerateBill";
+import toast, { Toaster } from "react-hot-toast";
 
 function StickyHeadTable({restaurantinfo}) {
   const [data, setData] = React.useState([]);
@@ -82,6 +83,40 @@ function StickyHeadTable({restaurantinfo}) {
     setSelectedOrder(null);
   };
 
+  const handlePaidOrder=async(order)=>{
+    if(confirm('Are you sure you want to mark this order as paid?')){
+      console.log("ok clicked");
+      const response = await axios.post(`/api/makeorderpaid`, {
+        order_id: order.order_id,
+      });
+      if(response.data.success)
+      {
+        toast.success("Order status updated successfully.");
+        fetchOrders(id);
+      }
+      else{
+        toast.error("Failed to update status.");
+      }
+    }
+  }
+
+  const handleDeleteOrder=async(order)=>{
+    if(confirm('Are you sure you want to delete this order?')){
+      console.log("ok clicked");
+      const response = await axios.post(`/api/deleteOrder`, {
+        order_id: order.order_id,
+      });
+      if(response.data.success)
+      {
+        toast.success("Order deleted successfully");
+        fetchOrders(id);
+      }
+      else{
+        toast.error("Failed to delete order");
+      }
+    }
+  }
+    
   const handleGenerateBillClick = (order) => {
     console.log(opengeneratemodal)
     setSelectedOrder(order);
@@ -104,6 +139,7 @@ function StickyHeadTable({restaurantinfo}) {
 
   return (
     <section className=" ">
+      <Toaster/>
       <Image
         src={rest}
         width={1000}
@@ -288,7 +324,9 @@ function StickyHeadTable({restaurantinfo}) {
                                 ? "bg-blue-600"
                                 : row.order_status === "served"
                                 ? "bg-yellow-600"
-                                : "bg-gray-500"
+                                : row.order_status === "billgenerated"
+                                ? "bg-gray-900"
+                                : "bg-slate-400"
                             } text-white`}
                             label={
                               row.order_status === "new"
@@ -299,45 +337,44 @@ function StickyHeadTable({restaurantinfo}) {
                                 ? "Updated"
                                 : row.order_status === "served"
                                 ? "Served"
+                                : row.order_status === "billgenerated"
+                                ? "Bill generated"
                                 : "No status"
                             }
-                            // color={
-                            //   row.order_status === "waitingforbill"
-                            //     ? "success"
-                            //     : row.order_status === "new" ||
-                            //       row.order_status === "updated"
-                            //     ? "warning"
-                            //     : "default"
-                            // }
                             size="small"
                           />
                         </TableCell>
                         <TableCell>
-                          {/* <Tooltip
-                            title="View Order Details"
-                            arrow
-                            placement="top"
-                          >
-                            <RemoveRedEye />
-                          </Tooltip> */}
                           {row.total_quantity}
                         </TableCell>
                         <TableCell>₹ {row.total_bill}</TableCell>
                         <TableCell>
-                          <Chip
+                          {row.order_status=="billgenerated" && <Chip
+                            label="Mark as paid"
+                            style={{ cursor: "pointer" }}
+                            onClick={()=>{handlePaidOrder(row)}}
+                            className="bg-[#440129] text-[#fff9ea] px-2 hover:bg-[#820b4f] hover:scale-105"
+                          />}
+                          {row.order_status!="billgenerated" && <Chip
+                            label="In process"
+                            className="bg-transparent text-black px-2"
+                          />}
+                        </TableCell>
+                        <TableCell><div className="flex items-center justify-center space-x-4"><Chip
                             label="Generate Bill"
                             style={{ cursor: "pointer" }}
                             onClick={()=>{handleGenerateBillClick(row)}}
                             className="bg-[#440129] text-[#fff9ea] px-2 hover:bg-[#820b4f] hover:scale-105"
                           />
-                        </TableCell>
-                        <TableCell>
                           <Chip
                             label="View Order >>"
-                            className="bg-[#2d031b] px-2 text-[#fff9ea] hover:bg-[#820b4f] hover:scale-105"
+                            className="bg-[#440129] px-2 text-[#fff9ea] hover:bg-[#820b4f] hover:scale-105"
                             onClick={() => handleViewOrderDetails(row)}
                             style={{ cursor: "pointer" }}
                           />
+                          <Delete onClick={()=>{handleDeleteOrder(row)}} className="cursor-pointer hover:scale-105 hover:text-[#820b4f]"/>
+                          </div>
+                          
                         </TableCell>
                       </TableRow>
                     );
@@ -401,6 +438,8 @@ function StickyHeadTable({restaurantinfo}) {
                         ? "bg-blue-600"
                         : selectedOrder.order_status === "served"
                         ? "bg-yellow-600"
+                        : selectedOrder.order_status === "billgenerated"
+                        ? "bg-gray-900"
                         : "bg-gray-500"
                     } text-white py-0 px-2`}
                     label={
@@ -412,6 +451,8 @@ function StickyHeadTable({restaurantinfo}) {
                         ? "Updated Order"
                         : selectedOrder.order_status === "served"
                         ? "Served"
+                        : selectedOrder.order_status === "billgenerated"
+                        ? "Bill Generated"
                         : "No status"
                     }
                   />

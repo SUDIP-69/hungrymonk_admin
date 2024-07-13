@@ -39,18 +39,19 @@ const handler=async(req,res)=>{
                     discountamount:discountamount,
                     discount_description:discountdescription,
                     total_bill:amountafterdiscount,
+                    order_status:"billgenerated",
                 }
                 const confirmorder= new CompletedOrders(u);
                 const result=await confirmorder.save();
                 console.log(result);
                 
                 if(result){
-                    const a=await Orders.findOneAndDelete({order_id});
+                    const a=await Orders.findOneAndUpdate({order_id},{order_status:"billgenerated"});
                     if(a){
                         res.status(200).json({success: true,data:result})
                     }
                     else{
-                        res.status(401).json({success: false,error:"Couldn't delete order from current list"})
+                        res.status(401).json({success: false,error:"Couldn't update order store"})
                     }
                 }
                 else{

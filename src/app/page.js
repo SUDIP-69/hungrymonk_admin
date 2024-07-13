@@ -35,13 +35,13 @@ export default function Home() {
         toast.success("Successfully logged in");
         localStorage.setItem("accessToken", token);
         localStorage.setItem("restaurant_id", restaurantid);
-        toast.loading("Redirecting to dashboard...");
+        // toast.loading("Redirecting to dashboard...");
         router.push(`/Home/${restaurantid}`);
       } else {
         toast.error("Login failed");
       }
     } catch (error) {
-      toast.dismiss();
+      // toast.dismiss();
       toast.error("An error occurred during login");
     } finally {
       setLoading(false);

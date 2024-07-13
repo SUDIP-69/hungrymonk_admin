@@ -8,7 +8,7 @@ const handler = async (req, res) => {
       //console.log(restaurant_id);
 
       // Fetch all orders for the given restaurant_id
-      const orders = await CompletedOrders.find({ restaurant_id });
+      const orders = await CompletedOrders.find({ restaurant_id ,order_status:"paid"});
 
       if (orders.length > 0) {
         // Calculate the start and end of the current day
@@ -25,7 +25,6 @@ const handler = async (req, res) => {
             tsum += parseFloat(orders[i].total_bill);
           }
         }
-
         res.status(200).json({ success: true, total: tsum.toFixed(2), data: orders });
       } else {
         res.status(202).json({ success: false, data: "No orders found" });
