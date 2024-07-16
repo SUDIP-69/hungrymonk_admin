@@ -13,7 +13,7 @@ async function page({ params }) {
     );
     restaurantinfo = data.data;
   } catch (e) {
-    console.log("Error fetching restaurant details", e);
+    //console.log("Error fetching restaurant details", e);
     return <><Page/></>
   }
 

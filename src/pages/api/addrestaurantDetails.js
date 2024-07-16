@@ -5,13 +5,13 @@ const handler = async (req, res) => {
   try {
     if (req.method === "POST") {
       const restaurantDetails = req.body;
-      console.log("Request Body:", restaurantDetails);
+      //console.log("Request Body:", restaurantDetails);
 
       const resr = new RestaurantDetails(restaurantDetails);
-      console.log("New Restaurant Object:", resr);
+      //console.log("New Restaurant Object:", resr);
 
       const result = await resr.save();
-      console.log("Save Result:", result);
+      //console.log("Save Result:", result);
 
       if (result) {
         res.json({ success: true, data: result });

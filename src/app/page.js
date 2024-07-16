@@ -33,10 +33,10 @@ export default function Home() {
         setUser("");
         setPassword("");
         toast.success("Successfully logged in");
+        toast.loading("Redirecting to dashboard...");
         localStorage.setItem("accessToken", token);
         localStorage.setItem("restaurant_id", restaurantid);
-        // toast.loading("Redirecting to dashboard...");
-        router.push(`/Home/${restaurantid}`);
+        window.location=`/Home/${restaurantid}`;
       } else {
         toast.error("Login failed");
       }
@@ -65,7 +65,7 @@ export default function Home() {
           <Image className="mx-auto h-30" src={logo} alt="logo" />
           <div>
             <p className="uppercase text-white tracking-wide text-2xl lg:ml-0 -ml-2 -mt-32 mb-20 px-32">
-              arabikas
+              Baksish
             </p>
           </div>
           <h2 className="text-center text-2xl font-light tracking-tight text-white">

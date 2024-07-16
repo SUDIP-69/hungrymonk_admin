@@ -37,14 +37,14 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
     },
     validationSchema: waiterValidationSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log("Form Data:", values);
+      //console.log("Form Data:", values);
       setLoading(true);
       try {
         const res = await axios.post("/api/addwaiter", {
           formData: values,
           id: restaurantinfo.restaurantid,
         });
-        console.log(res.data.success);
+        //console.log(res.data.success);
         if (res.data.success) {
           toast.success("Waiter added successfully");
           setTimeout(() => {
@@ -54,7 +54,7 @@ const AddWaiterModalForm = ({ handleclose, restaurantinfo }) => {
           window.location.reload();
         }
       } catch (e) {
-        console.log(e);
+        //console.log(e);
         toast.error("Error adding waiter");
       } finally {
         setLoading(false);

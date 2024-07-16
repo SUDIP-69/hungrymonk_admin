@@ -15,8 +15,12 @@ import PersonSearchSection from "./WaiterView";
 import WaiterDetails from "./WaiterDetails";
 import { CurrencyRupeeOutlined, LibraryAddCheck } from "@mui/icons-material";
 import Collections from "./Collections";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
 
 function Dashboard({ restaurantinfo }) {
+  const router=useRouter();
   const [currentSection, setCurrentSection] = useState("home");
 
   useEffect(() => {
@@ -24,6 +28,33 @@ function Dashboard({ restaurantinfo }) {
     const savedSection = localStorage.getItem("currentSection");
     if (savedSection) {
       setCurrentSection(savedSection);
+    }
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      router.push("/");
+    } else {
+      axios
+        .post("/api/verifyjwt", { token })
+        .then((response) => {
+          if (response.data.success) {
+            const savedSection = localStorage.getItem("currentSection");
+            if (savedSection) {
+              setCurrentSection(savedSection);
+            }
+            return () => clearInterval(intervalId);
+          } else {
+            window.location="/";
+            localStorage.removeItem("accessToken");
+          }
+        })
+        .catch((error) => {
+          console.error("Token verification failed", error);
+          localStorage.removeItem("accessToken");
+          window.location="/";
+        });
     }
   }, []);
 
@@ -43,8 +74,8 @@ function Dashboard({ restaurantinfo }) {
         return <PersonSearchSection restaurantinfo={restaurantinfo} />;
       case "personSearch":
         return <WaiterDetails restaurantinfo={restaurantinfo} />;
-        case "Collections":
-          return <Collections restaurantinfo={restaurantinfo} />;
+      case "Collections":
+        return <Collections restaurantinfo={restaurantinfo} />;
       case "settings":
         return (
           <SettingsComponent

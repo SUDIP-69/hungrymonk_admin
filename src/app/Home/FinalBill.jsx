@@ -9,8 +9,8 @@ import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 function FinalBill({
   restaurantinfo,
@@ -20,6 +20,7 @@ function FinalBill({
   discountdescription,
 }) {
   //console.log(selectedOrder);
+  const [customerphone_no, setcustomerphone_no] = useState("")
   const date = new Date(selectedOrder.createdAt);
   const day = date.getDate().toString().padStart(2, "0");
   const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
@@ -35,7 +36,7 @@ function FinalBill({
     const res = await axios.post("/api/getqrcodefortip", {
       url: `${process.env.NEXT_PUBLIC_QR_URL}/id=${restaurantinfo.restaurant_id}`,
     });
-    console.log(res.data);
+    //console.log(res.data);
     setqrcode(res.data.qrCodeDataURL);
   };
 
@@ -43,18 +44,24 @@ function FinalBill({
     order_id,
     cgst,
     sgst,
+    discountamount,
     discountpercent,
-    discountdescription
+    discountdescription,
+    total_amount
   ) => {
     try {
       const res = await axios.post("/api/generatebill", {
         order_id,
         cgst,
         sgst,
+        discountamount,
         discountpercent,
         discountdescription,
+        total_amount,
       });
+      console.log(res);
       setorderbill(res.data.data);
+      toast.success("Mark the order as paid once the customer has paid.");
     } catch (e) {
       toast.error("Failed to generate bill");
     }
@@ -63,24 +70,41 @@ function FinalBill({
   useEffect(() => {
     if (hasFetchedBill.current) return;
     fetchtipqr();
+    let initial = selectedOrder.initial_bill;
+    let discountamount = (
+      parseFloat(discountPercentage) *
+      parseFloat(initial) *
+      0.01
+    ).toFixed(2);
+    let final = initial - discountamount;
     const cgst = (
       0.01 *
-      (parseFloat(restaurantinfo.cgst) * parseFloat(selectedOrder.initial_bill))
+      (parseFloat(restaurantinfo.cgst) * parseFloat(final))
     ).toFixed(2);
     const sgst = (
       0.01 *
-      (parseFloat(restaurantinfo.sgst) * parseFloat(selectedOrder.initial_bill))
+      (parseFloat(restaurantinfo.sgst) * parseFloat(final))
+    ).toFixed(2);
+    let total_amount = (
+      parseFloat(final) +
+      parseFloat(cgst) +
+      parseFloat(sgst)
     ).toFixed(2);
     fetchgeneratedbill(
       selectedOrder.order_id,
       cgst,
       sgst,
+      discountamount,
       discountPercentage,
-      discountdescription
+      discountdescription,
+      total_amount
     );
     hasFetchedBill.current = true;
   }, []);
 
+  const sendbilltophone=()=>{
+    toast.success("Bill sent to phone")
+  }
   const handleDownload = async () => {
     // const invoice = document.getElementById('invoice');
     // const canvas = await html2canvas(invoice, {
@@ -104,7 +128,7 @@ function FinalBill({
     // const height = imgHeight * ratio;
 
     // pdf.addImage(imgData, 'PNG', 0, 0, width, height);
-    const invoice = document.getElementById('invoice');
+    const invoice = document.getElementById("invoice");
     const canvas = await html2canvas(invoice, {
       scale: 2, // Increase the scale for better resolution
       useCORS: true,
@@ -112,8 +136,8 @@ function FinalBill({
       windowHeight: invoice.scrollHeight,
     });
 
-    const imgData = canvas.toDataURL('image/jpeg', 0.7); // Reduce quality to 70%
-    const pdf = new jsPDF('p', 'mm', 'a4');
+    const imgData = canvas.toDataURL("image/jpeg", 0.7); // Reduce quality to 70%
+    const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     const imgProps = pdf.getImageProperties(imgData);
@@ -125,25 +149,27 @@ function FinalBill({
     const width = imgWidth * ratio;
     const height = imgHeight * ratio;
 
-    pdf.addImage(imgData, 'JPEG', 0, 0, width, height);
+    pdf.addImage(imgData, "JPEG", 0, 0, width, height);
     pdf.save(`invoice-${selectedOrder.order_id}.pdf`);
   };
   const handlePrint = () => {
-    const invoice = document.getElementById('invoice').outerHTML;
-    const iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.width = '0px';
-    iframe.style.height = '0px';
-    iframe.style.border = 'none';
+    const invoice = document.getElementById("invoice").outerHTML;
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "absolute";
+    iframe.style.width = "0px";
+    iframe.style.height = "0px";
+    iframe.style.border = "none";
     document.body.appendChild(iframe);
 
     const doc = iframe.contentWindow.document;
     doc.open();
-    doc.write('<html><head><title>Invoice</title>');
-    doc.write('<style>@page { size: auto; margin: 10mm; } body { font-family: Arial, sans-serif; }</style>');
-    doc.write('</head><body>');
+    doc.write("<html><head><title>Invoice</title>");
+    doc.write(
+      "<style>@page { size: auto; margin: 10mm; } body { font-family: Arial, sans-serif; }</style>"
+    );
+    doc.write("</head><body>");
     doc.write(invoice);
-    doc.write('</body></html>');
+    doc.write("</body></html>");
     doc.close();
 
     iframe.contentWindow.focus();
@@ -166,7 +192,10 @@ function FinalBill({
     <>
       {orderbill && (
         <div>
-          <div id="invoice" className=" bg-white -mx-3 py-8 mt-8 p-4 shadow-md border-2 border-black">
+          <div
+            id="invoice"
+            className=" bg-white -mx-3 py-8 mt-8 p-4 shadow-md border-2 border-gray-300"
+          >
             <Toaster />
             <Typography variant="h6" align="center" className="font-bold mb-4">
               {restaurantinfo.restaurantname.toUpperCase()}
@@ -256,7 +285,7 @@ function FinalBill({
                 </Typography>
               </div>
             )}
-            <div className="flex justify-between mb-2">
+            <div className="flex justify-between mb-0">
               <Typography variant="body2">
                 CGST @ {restaurantinfo.cgst}%
               </Typography>
@@ -298,12 +327,44 @@ function FinalBill({
               Have a nice day!
             </Typography>
           </div>
-          <div className="flex justify-center mt-4 space-x-10">
-            <button onClick={handleDownload} className="text-lg px-4 bg-stone-600 text-center py-2 rounded-xl text-white">
+          <div className="items-center rounded-xl border-2 border-gray-300 px-6 py-3 mt-6 space-y-2">
+              <label
+                htmlFor="phoneNumber"
+                className="text-gray-700 font-semibold"
+              >
+                Send bill to customer:
+              </label>
+            <div className="flex items-center space-x-6 justify-center">
+              <input
+                type="text"
+                id="phoneNumber"
+                value={customerphone_no}
+                onChange={(e)=>{setcustomerphone_no(e.target.value)}}
+                placeholder="Enter phone number"
+                className="border border-gray-300 rounded-lg w-48 px-4 py-2 focus:outline-none "
+              />
+            
+           
+              <button
+              onClick={sendbilltophone}
+              disabled={customerphone_no.length!=10} className="bg-[#441029] hover:bg-[#81214f] disabled:bg-gray-300 disabled:cursor-not-allowed hover:scale-95 text-white px-6 py-2 rounded-lg ">
+                Send
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-center mt-8 space-x-6">
+            <button
+              onClick={handleDownload}
+              className="text-lg px-4 bg-[#441029] hover:bg-[#81214f] hover:scale-95 text-center py-2 rounded-xl text-white"
+            >
               <DownloadForOffline />
               &nbsp;Download{" "}
             </button>
-            <button onClick={handlePrint} className="text-lg px-10 bg-stone-600 py-2 rounded-xl text-center text-white">
+            <button
+              onClick={handlePrint}
+              className="text-lg px-10 bg-[#441029] hover:bg-[#81214f] hover:scale-95 py-2 rounded-xl text-center text-white"
+            >
               <Print />
               &nbsp;Print
             </button>

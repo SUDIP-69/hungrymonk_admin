@@ -29,9 +29,9 @@ const sendEmail = async (email, username, password) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully");
+    //console.log("Email sent successfully");
   } catch (error) {
-    console.error("Error sending email:", error);
+    //console.error("Error sending email:", error);
   }
 };
 
@@ -40,7 +40,7 @@ const handler = async (req, res) => {
     if (req.method === "POST") {
       const { formData, id } = req.body;
       const password = generatePassword(formData.name, formData.age, formData.profession);
-      console.log(password);
+      //console.log(password);
       const passwordHashed = await bcrypt.hash(password, 10);
 
       const newWaiter = new Waiter_credentials({

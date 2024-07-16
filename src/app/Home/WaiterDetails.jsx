@@ -24,7 +24,7 @@ const WaiterDetails = ({ restaurantinfo }) => {
     const res = await axios.post("/api/getwaiters", {
       restaurant_id: restaurantinfo.restaurantid,
     });
-    console.log(res.data);
+    //console.log(res.data);
     if (res.data.success) {
       if (res.data.data.length > 0) {
         setwaitertable(res.data.data);
@@ -41,7 +41,7 @@ const WaiterDetails = ({ restaurantinfo }) => {
 
   const handleDelete = async (waiterId) => {
     const res = await axios.post("/api/removewaiter", { waiterId });
-    console.log(res.data);
+    //console.log(res.data);
     if (res.data.success) {
       toast.success("Waiter removed successfully");
       fetchwaiters();

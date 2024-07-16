@@ -8,18 +8,25 @@ const restaurantItemsSchema = new mongoose.Schema(
     restaurant_name: {
       type: String,
     },
-    food_items: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "FoodItems",
-      },
-    ],
     cgst:{
       type:String,
     },
     sgst:{
       type:String,
     },
+    food_items: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FoodItems",
+      },
+    ],
+    nooftables:{
+      type:String,
+    },
+    reviewLink:{
+      type:String,
+    },
+
   },
   { timestamps: true }
 );

@@ -81,7 +81,7 @@ const MenuItemForm = ({
       available_status: formData.status === "available",
     };
 
-    console.log("Payload before sending:", payload);
+    //console.log("Payload before sending:", payload);
 
     try {
       if (update) {
@@ -90,7 +90,7 @@ const MenuItemForm = ({
           fid: foodItem._id,
         });
         if (data.success) {
-          console.log("Food item updated successfully:", data.data);
+          //console.log("Food item updated successfully:", data.data);
           handleclose();
           window.location.reload();
         } else {
@@ -99,7 +99,7 @@ const MenuItemForm = ({
       } else {
         const { data } = await axios.post("/api/createnewcategoryitem", payload);
         if (data.success) {
-          console.log("Food item added successfully:", data.data);
+          //console.log("Food item added successfully:", data.data);
           handleclose();
           window.location.reload();
         } else {

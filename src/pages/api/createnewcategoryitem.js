@@ -29,7 +29,7 @@ const handler = async (req, res) => {
       });
 
       const savedFoodItem = await newFoodItem.save();
-      console.log(savedFoodItem);
+      //console.log(savedFoodItem);
 
       if (savedFoodItem) {
         // Find the restaurant and update the food items array
@@ -38,7 +38,7 @@ const handler = async (req, res) => {
           { $push: { food_items: savedFoodItem._id } },
           { new: true, upsert: true }
         );
-        console.log(updatedRestaurant);
+        //console.log(updatedRestaurant);
 
         if (updatedRestaurant) {
           res.status(201).json({

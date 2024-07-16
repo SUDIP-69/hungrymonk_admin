@@ -15,6 +15,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import GenerateBillModal from "./GenerateBill";
 import toast, { Toaster } from "react-hot-toast";
+import EditOrderModal from "./EditOrder";
+import ViewOrder from "./ViewOrder";
 
 function StickyHeadTable({restaurantinfo}) {
   const [data, setData] = React.useState([]);
@@ -23,10 +25,11 @@ function StickyHeadTable({restaurantinfo}) {
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedOrder, setSelectedOrder] = React.useState(null);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [loading, setLoading] = React.useState(false);
   const [opengeneratemodal, setopengeneratemodal] = React.useState(false);
   const id = localStorage.getItem("restaurant_id");
+  
   const fetchOrders = async (id) => {
     try {
       setLoading(true);
@@ -36,17 +39,28 @@ function StickyHeadTable({restaurantinfo}) {
       setData(data.data);
       setFilteredData(data.data); // Initialize filteredData with all data
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     } finally {
       setLoading(false);
     }
   };
   // setInterval(() => {
+  //   console.log("called")
   //   fetchOrders(id);
   // }, 30000);
+  // React.useEffect(() => {
+  //   fetchOrders(id);
+  // }, [restaurantinfo]);
+
   React.useEffect(() => {
-    fetchOrders(id);
-  }, []);
+    fetchOrders(id); // Initial fetch
+    const intervalId = setInterval(() => {
+      fetchOrders(id);
+    }, 100000); // Fetch every 100 seconds
+
+    return () => clearInterval(intervalId); // Clear interval on component unmount
+  }, [id]);
+
 
   // Handle search input change
   const handleSearchChange = (event) => {
@@ -59,11 +73,13 @@ function StickyHeadTable({restaurantinfo}) {
     if (!term) {
       setFilteredData(data);
     } else {
+      const cleanedTerm = term.toLowerCase().replace(/\s+/g, '');
       const filtered = data.filter(
         (order) =>
-          order.table_number.toLowerCase().includes(term.toLowerCase()) ||
-          order.order_id.toLowerCase().includes(term.toLowerCase()) ||
-          order.customer_id.toLowerCase().includes(term.toLowerCase())
+          order.table_number.toLowerCase().includes(cleanedTerm) ||
+          order.order_id.toLowerCase().includes(cleanedTerm) ||
+          order.customer_id.toLowerCase().includes(cleanedTerm)||
+          order.order_status.toLowerCase().includes(cleanedTerm)
       );
       setFilteredData(filtered);
     }
@@ -72,7 +88,7 @@ function StickyHeadTable({restaurantinfo}) {
 
   // Open modal and set selected order
   const handleViewOrderDetails = (order) => {
-    console.log(order);
+    //console.log(order);
     setSelectedOrder(order);
     setOpenModal(true);
   };
@@ -81,11 +97,15 @@ function StickyHeadTable({restaurantinfo}) {
   const handleCloseModal = () => {
     setOpenModal(false);
     setSelectedOrder(null);
+    fetchOrders(id);
   };
+
+  
+
 
   const handlePaidOrder=async(order)=>{
     if(confirm('Are you sure you want to mark this order as paid?')){
-      console.log("ok clicked");
+      //console.log("ok clicked");
       const response = await axios.post(`/api/makeorderpaid`, {
         order_id: order.order_id,
       });
@@ -102,7 +122,7 @@ function StickyHeadTable({restaurantinfo}) {
 
   const handleDeleteOrder=async(order)=>{
     if(confirm('Are you sure you want to delete this order?')){
-      console.log("ok clicked");
+      //console.log("ok clicked");
       const response = await axios.post(`/api/deleteOrder`, {
         order_id: order.order_id,
       });
@@ -118,13 +138,13 @@ function StickyHeadTable({restaurantinfo}) {
   }
     
   const handleGenerateBillClick = (order) => {
-    console.log(opengeneratemodal)
+    //console.log(opengeneratemodal)
     setSelectedOrder(order);
     setopengeneratemodal(true);
   };
   const handleClosegenerateModal=()=>{
     setopengeneratemodal(false);
-    
+    fetchOrders(id);
   }
 
 
@@ -183,7 +203,7 @@ function StickyHeadTable({restaurantinfo}) {
                 </div>
               </form>
             </div>
-            <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+            {/* <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
               <div className="flex items-center space-x-3 w-full md:w-auto">
                 <button
                   id="actionsDropdownButton"
@@ -262,7 +282,7 @@ function StickyHeadTable({restaurantinfo}) {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
           <TableContainer>
             <Table stickyHeader aria-label="sticky table">
@@ -384,7 +404,7 @@ function StickyHeadTable({restaurantinfo}) {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 15, 25]}
             component="div"
             count={filteredData.length}
             rowsPerPage={rowsPerPage}
@@ -395,9 +415,12 @@ function StickyHeadTable({restaurantinfo}) {
         </div>
       </div>
 
-      {/* Modal for viewing order details */}
-      <Modal open={openModal} onClose={handleCloseModal}>
-        <div className="relative  bg-white max-h-[80%] overflow-y-auto w-[30%] mx-auto mt-24 p-5 rounded-lg">
+
+          {/* Modal for viewing/editing order */}
+      {openModal && <ViewOrder open={openModal} onClose={handleCloseModal} selectedOrder={selectedOrder} restaurantinfo={restaurantinfo}/>}
+      
+      {/* <Modal open={openModal} onClose={handleCloseModal}>
+        <div className="relative  bg-white max-h-[80%] overflow-y-auto w-[80%] md:w-[30%] mx-auto mt-24 p-5 rounded-lg">
           <button
             onClick={handleCloseModal}
             className="absolute top-2 right-2 text-gray-500 border-[1px] rounded-full border-[#440129] p-1 hover:bg-[#440129] hover:text-gray-200"
@@ -419,12 +442,8 @@ function StickyHeadTable({restaurantinfo}) {
                   <span className="font-semibold text-sm">Order ID:</span>
                   <span className="text-sm">{selectedOrder.order_id}</span>
                 </div>
-                {/* <div className="flex justify-between">
-                  <span className="font-semibold">Customer ID:</span>
-                  <span>{selectedOrder.customer_id}</span>
-                </div> */}
+                
               </div>
-              {/* <hr className="border-[1px] border-dotted border-black my-4"/> */}
               <div className="flex mt-3 justify-start space-x-4">
                 <span className="font-semibold">Status:</span>
                 <span>
@@ -461,12 +480,6 @@ function StickyHeadTable({restaurantinfo}) {
               <hr className="border-[1px] border-dotted border-black my-4" />
               <div className="flex flex-col">
                 <span className="font-semibold mb-1">Order Items:</span>
-                {/* {selectedOrder.order_items.map((item, index) => (
-                    <div key={index} className="flex justify-between">
-                      <span>{item.food_name}</span>
-                      <span>{item.quantity}</span>
-                    </div>
-                  ))} */}
                 {selectedOrder.order_items.map((orderitems, j) => (
                   <span key={j}>
                     {orderitems.items.map((item, k) => (
@@ -500,10 +513,15 @@ function StickyHeadTable({restaurantinfo}) {
               </div>
             </>
           )}
+          <div className="mt-6 flex items-center justify-center">
+          <div className="py-2 px-8 bg-[#441029] cursor-pointer text-white rounded-lg" onClick={()=>{handleOpenEditOrder(selectedOrder)}}>Edit Order</div>
+          </div>          
         </div>
-      </Modal>
+      </Modal> */}
+
           {/* Modal for generating bill */}
       {opengeneratemodal&&<GenerateBillModal open={opengeneratemodal} onClose={handleClosegenerateModal} selectedOrder={selectedOrder} restaurantinfo={restaurantinfo}/>}
+    
     </section>
   );
 }
@@ -517,3 +535,5 @@ export default function PersonSearchSection({restaurantinfo}) {
     </>
   );
 }
+
+

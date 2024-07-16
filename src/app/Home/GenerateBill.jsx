@@ -18,10 +18,11 @@ const GenerateBillModal = ({
   selectedOrder,
   restaurantinfo,
 }) => {
-  console.log(restaurantinfo);
+  //console.log(restaurantinfo);
   const [discountOption, setDiscountOption] = useState("no");
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [finalBill, setFinalBill] = useState(null);
+  const [finaltax, setfinaltax] = useState(null);
   const [discountdescription, setdiscountdescription] = useState("");
   const [openfinalBill, setopenfinalBill] = useState(false);
 
@@ -47,12 +48,23 @@ const GenerateBillModal = ({
   const handleDiscountDescriptionChange = (event) => {
     setdiscountdescription(event.target.value);
   };
-
+  const [discountamount, setdiscountamount] = useState("")
   const calculateFinalBill = () => {
     let total = selectedOrder.total_bill;
+    let initial = selectedOrder.initial_bill;
+    let sgstamount = 0,
+      cgstamount = 0;
     if (discountOption === "yes" && discountPercentage > 0) {
-      const discount = (total * discountPercentage) / 100;
-      total -= discount;
+      const discount = initial * discountPercentage * 0.01;
+      initial -= discount;
+      setdiscountamount(discount.toFixed(2));
+      sgstamount = parseFloat(restaurantinfo.sgst) * initial * 0.01;
+      cgstamount = parseFloat(restaurantinfo.cgst) * initial * 0.01;
+      total = (initial + cgstamount + sgstamount).toFixed(2);
+      console.log(sgstamount, cgstamount);
+      setfinaltax((cgstamount + sgstamount).toFixed(2));
+    } else {
+      setfinaltax(selectedOrder.tax);
     }
     setFinalBill(parseFloat(total).toFixed(2));
   };
@@ -124,17 +136,13 @@ const GenerateBillModal = ({
                     >
                       Apply
                     </Button>
-                    {finalBill !== null && (
+                    {finalBill !== null && finaltax !== null && (
                       <>
                         <div className="mt-4">
                           <div className="flex items-center justify-center mb-2">
                             <KeyboardDoubleArrowDown />
                           </div>
-                          {/* <hr className="border-[1px] border-dashed border-black my-4" /> */}
-                          {/* <div className="flex justify-between">
-                    <span className="font-semibold">Final Amount: </span>
-                    <span>₹ {finalBill}</span>
-                  </div> */}
+
                           {selectedOrder && (
                             <>
                               <h2 className="text-lg text-center font-semibold py-1">
@@ -156,52 +164,14 @@ const GenerateBillModal = ({
                                     {selectedOrder.order_id}
                                   </span>
                                 </div>
-                                {/* <div className="flex justify-between">
-                  <span className="font-semibold">Customer ID:</span>
-                  <span>{selectedOrder.customer_id}</span>
-                </div> */}
                               </div>
-                              {/* <hr className="border-[1px] border-dotted border-black my-4"/> */}
-                              {/* <div className="flex mt-3 justify-start space-x-4">
-                <span className="font-semibold">Status:</span>
-                <span>
-                  <Chip
-                    className={`${
-                      selectedOrder.order_status === "new"
-                        ? "bg-red-600"
-                        : selectedOrder.order_status === "waitingforbill"
-                        ? "bg-green-600"
-                        : selectedOrder.order_status === "updated"
-                        ? "bg-blue-600"
-                        : selectedOrder.order_status === "served"
-                        ? "bg-yellow-600"
-                        : "bg-gray-500"
-                    } text-white py-0 px-2`}
-                    label={
-                      selectedOrder.order_status === "new"
-                        ? "New Order"
-                        : selectedOrder.order_status === "waitingforbill"
-                        ? "Waiting for bill"
-                        : selectedOrder.order_status === "updated"
-                        ? "Updated Order"
-                        : selectedOrder.order_status === "served"
-                        ? "Served"
-                        : "No status"
-                    }
-                  />
-                </span>
-              </div> */}
+
                               <hr className="border-[1px] border-dotted border-black my-4" />
                               <div className="flex flex-col">
                                 <span className="font-semibold mb-1">
                                   Order Items:
                                 </span>
-                                {/* {selectedOrder.order_items.map((item, index) => (
-                    <div key={index} className="flex justify-between">
-                      <span>{item.food_name}</span>
-                      <span>{item.quantity}</span>
-                    </div>
-                  ))} */}
+
                                 {selectedOrder.order_items.map(
                                   (orderitems, j) => (
                                     <span key={j}>
@@ -231,25 +201,32 @@ const GenerateBillModal = ({
                                 <span className="font-semibold">Amount:</span>
                                 <span>₹ {selectedOrder.initial_bill}</span>
                               </div>
+                              {discountPercentage!="0" && (
+                                <div>
+                                  <div className="flex justify-between">
+                                    <span className="font-semibold">
+                                      Discount ({discountPercentage}%):
+                                    </span>
+                                    <span>₹ {discountamount}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="font-semibold">
+                                      Payable Amount:
+                                    </span>
+                                    <span>₹ {(selectedOrder.initial_bill-discountamount).toFixed(2)}</span>
+                                  </div>
+                                </div>
+                              )}
                               <div className="flex justify-between">
                                 <span className="font-semibold">
                                   GST and Service Tax:
                                 </span>
-                                <span>₹ {selectedOrder.tax}</span>
+                                <span>₹ {finaltax}</span>
                               </div>
-                              <div className="flex justify-between">
+
+                              <div className="flex justify-between mt-2">
                                 <span className="font-semibold">
                                   Total Amount:
-                                </span>
-                                <span>₹ {selectedOrder.total_bill}</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="font-semibold">Discount:</span>
-                                <span>{discountPercentage}%</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="font-semibold">
-                                  Net Payable Amount:
                                 </span>
                                 <span>₹ {finalBill}</span>
                               </div>
@@ -275,19 +252,20 @@ const GenerateBillModal = ({
               )}
             </>
           )}
-          {openfinalBill && (<>
-            <h2 className="text-lg text-center font-semibold py-1">
-                   Final Bill
-                  </h2>
-                  <hr className="mb-3 border-[0.1px] border-black mx-auto w-20" />
-            <FinalBill
-              restaurantinfo={restaurantinfo}
-              onCloseBill={handleclosefinalbill}
-              onClose={onClose}
-              selectedOrder={selectedOrder}
-              discountPercentage={discountPercentage}
-              discountdescription={discountdescription}
-            />
+          {openfinalBill && (
+            <>
+              <h2 className="text-lg text-center font-semibold py-1">
+                Final Bill
+              </h2>
+              <hr className="mb-3 border-[0.1px] border-black mx-auto w-20" />
+              <FinalBill
+                restaurantinfo={restaurantinfo}
+                onCloseBill={handleclosefinalbill}
+                onClose={onClose}
+                selectedOrder={selectedOrder}
+                discountPercentage={discountPercentage}
+                discountdescription={discountdescription}
+              />
             </>
           )}
         </div>

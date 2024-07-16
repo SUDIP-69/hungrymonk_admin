@@ -5,7 +5,7 @@ import Orders from "../../../model/Orders";
 const handler=async(req,res)=>{
     if(req.method==='POST'){
         try {
-            console.log(req.body)
+            //console.log(req.body)
             const{order_id}=req.body;
             const b=await Orders.findOneAndDelete({order_id});
             if(b){

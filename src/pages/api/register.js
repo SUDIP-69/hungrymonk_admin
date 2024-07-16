@@ -8,7 +8,7 @@ const handler = async (req, res) => {
       const { username, password, email, name, phoneNo, restaurantid } =
         req.body;
 
-      console.log(req.body);
+      //console.log(req.body);
       const passwordhashed = await bcrypt.hash(password, 10);
       const u = new Restaurant_credentials({
         username,

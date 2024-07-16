@@ -17,7 +17,7 @@ const handler = async (req, res) => {
       available_status,
     } = req.body;
 
-    console.log("Received data:", req.body,"fid",fid);
+    //console.log("Received data:", req.body,"fid",fid);
 
     try {
       // Find and update the food item, or create it if it doesn't exist

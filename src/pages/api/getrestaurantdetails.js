@@ -5,7 +5,7 @@ const handler = async (req, res) => {
   try {
     if (req.method === "POST") {
       const restaurantid = req.body.restaurantid;
-      console.log(restaurantid);
+      //console.log(restaurantid);
       const restaurant = await RestaurantDetails.findOne({ restaurantid });
       //console.log(restaurant);
       if (restaurant) res.json({ success: true, data: restaurant });

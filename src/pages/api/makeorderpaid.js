@@ -5,7 +5,7 @@ import Orders from "../../../model/Orders";
 const handler=async(req,res)=>{
     if(req.method==='POST'){
         try {
-            console.log(req.body)
+            //console.log(req.body)
             const{order_id}=req.body;
             const a=await CompletedOrders.findOneAndUpdate({order_id},{order_status:"paid"});
             if(a){
@@ -13,17 +13,17 @@ const handler=async(req,res)=>{
                     if(b){
                         res.status(200).json({success: true})
                     }else{
-                        res.status(401).json({success: false,error:"Couldn't delete order"})
+                        res.status(201).json({success: false,error:"Couldn't delete order"})
                     }
             }else{
-                res.status(401).json({success: false,error:"Couldn't update order status"})
+                res.status(201).json({success: false,error:"Couldn't update order status"})
             }            
         } catch (error) {
-            res.status(401).json({success: false,error:"Not Found"})
+            res.status(201).json({success: false,error:"Not Found"})
         }
     }
     else{
-        res.status(401).json({success: false,error:"Method Not Allowed"})
+        res.status(201).json({success: false,error:"Method Not Allowed"})
     }
 }
 
